@@ -52,7 +52,8 @@ npm run test
 
 # Credits
 
-*   [Vue.js](https://vuejs.org/), the progressive JavaScript framework. (Released under the MIT License, Copyright © 2014-2021 Evan You)
+*   [Vue.js](https://vuejs.org/), the progressive JavaScript framework. (Released under the MIT License, Copyright © 2019-PRESENT Anthony Fu<https://github.com/antfu>)
+*   [VueUse](https://vueuse.org/), a collection of essential Vue Composition Utilities for Vue 2 and 3. (Released under the MIT License, Copyright © 2014-2021 Evan You)
 *   [Material Design Icons](https://materialdesignicons.com/), the original. Following Google's Material Design guidelines for system icons. (Icons released under the Apache 2.0 License, by pictogrammers.com)
 *   [Jest](https://jestjs.io/), a delightful JavaScript Testing Framework. (Released under the MIT License, by Facebook)
 *   Music from the Album "Not For Sale" by Lidija Roos (Released to the public, by Lidija Roos)
