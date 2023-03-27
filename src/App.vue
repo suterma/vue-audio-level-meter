@@ -6,7 +6,7 @@ import { onMounted, ref, ShallowRef, shallowRef } from 'vue';
  *  Defining the AudioContext
  *  @devdoc webkitAudioContext supports older versions of Safari
  */
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+const AudioContext = window.AudioContext; //TODO later also use || window.webkitAudioContext;
 const audioContext = new AudioContext();
 const context = shallowRef(audioContext);
 
