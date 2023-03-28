@@ -104,9 +104,7 @@ onMounted(() => {
         typeof analyser.getFloatTimeDomainData === 'function';
 
     // Time domain samples are always provided with the count of
-    // fftSize even though there is no FFT involved.
-    // (Note that fftSize can only have particular values (powers of two),
-    // not an arbitrary integer.)
+    // fftSize (which is always a power of two) even though there is no FFT involved.
     // The value of 1024 has been empirically determined to be high enough to also include
     // bass and drum kick sounds in the calculated level at a reasonable degree.
     // You may set to a higher value to trade computational expense for more accuracy.

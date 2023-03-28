@@ -56,22 +56,24 @@ npm run test
 
 # Credits
 
-*   [Vue.js](https://vuejs.org/), the progressive JavaScript framework. (Released under the MIT License, Copyright © 2019-PRESENT [Anthony Fu](https://github.com/antfu))
-*   [VueUse](https://vueuse.org/), a collection of essential Vue Composition Utilities for Vue 2 and 3. (Released under the MIT License, Copyright © 2014-2021 Evan You)
+*   [Vue.js](https://vuejs.org/), the progressive JavaScript framework. (Released under the [MIT](https://opensource.org/license/mit/) License, Copyright © 2019-PRESENT [Anthony Fu](https://github.com/antfu))
+*   [VueUse](https://vueuse.org/), a collection of essential Vue Composition Utilities for Vue 2 and 3. (Released under the [MIT](https://opensource.org/license/mit/) License, Copyright © 2014-2021 Evan You)
 *   [Material Design Icons](https://materialdesignicons.com/), the original. Following Google's Material Design guidelines for system icons. (Icons released under the Apache 2.0 License, by pictogrammers.com)
-*   [Jest](https://jestjs.io/), a delightful JavaScript Testing Framework. (Released under the MIT License, by Facebook)
+*   [Jest](https://jestjs.io/), a delightful JavaScript Testing Framework. (Released under the [MIT](https://opensource.org/license/mit/) License, by Facebook)
 *   Music from the Album "Not For Sale" by Lidija Roos (Released to the public, by Lidija Roos)
 *   [@highlightjs/vue-plugin](https://github.com/highlightjs/vue-plugin), provides a highlightjs component for use in your Vue.js 3 applications. (Released under the BSD-3-Clause license, by the highlight.js team)
-*   [vite, vitest, @vitejs/plugin-vue](https://github.com/vitejs/vite), next Generation Frontend Tooling. (Released under the MIT License, by the vite team)
-*   [prettier](https://github.com/prettier/prettier), an opinionated Code Formatter. (Released under the MIT License, by the prettier team)
+*   [vite, vitest, @vitejs/plugin-vue](https://github.com/vitejs/vite), next Generation Frontend Tooling. (Released under the [MIT](https://opensource.org/license/mit/) License, by the vite team)
+*   [prettier](https://github.com/prettier/prettier), an opinionated Code Formatter. (Released under the [MIT](https://opensource.org/license/mit/) License, by the prettier team)
 *   [typescript](https://github.com/Microsoft/TypeScript), a language for application-scale JavaScript. (Released under the Apache-2.0 license, by Microsoft)
-*   [vue-tsc](https://github.com/johnsoncodehk/volar), high-performance tooling for Vue. (Released under the MIT License, by Johnson Chu)
+*   [vue-tsc](https://github.com/johnsoncodehk/volar), high-performance tooling for Vue. (Released under the [MIT](https://opensource.org/license/mit/) License, by Johnson Chu)
+*   [Inkscape](https://inkscape.org/), draw freely. (Released under the GPLv2 License)
 
-Documentation
-//TODO 
+## Inspiration from 
 
-Icon Design using https://m2.material.io/design/iconography/system-icons.html#system-icon-metrics
-Battery icon by https://pictogrammers.com/contributor/mririgoyen/
+*   Icon design using [System icon metrics](https://m2.material.io/design/iconography/system-icons.html#system-icon-metrics) for Material Design
+*   The "[battery charging high](https://pictogrammers.com/library/mdi/icon/battery-charging-high/)" icon by [Michael Irigoyen](https://pictogrammers.com/contributor/mririgoyen/). (Released under the Apache 2.0 License)
+*   An existing [Web Audio Peak Meter](https://github.com/esonderegger/web-audio-peak-meter) for JavaScript by [Evan Sonderegger](https://mastodon.social/@esonderegger). (Released under the [MIT](https://opensource.org/license/mit/) License)
+*   A [StackOverflow post](https://stackoverflow.com/a/44360729/79485) by [Kevin Reid](https://switchb.org/kpreid/) (Released under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) License)
 
 ---
 
