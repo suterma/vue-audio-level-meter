@@ -67,6 +67,12 @@ npm run test
 *   [typescript](https://github.com/Microsoft/TypeScript), a language for application-scale JavaScript. (Released under the Apache-2.0 license, by Microsoft)
 *   [vue-tsc](https://github.com/johnsoncodehk/volar), high-performance tooling for Vue. (Released under the MIT License, by Johnson Chu)
 
+Documentation
+//TODO 
+
+Icon Design using https://m2.material.io/design/iconography/system-icons.html#system-icon-metrics
+Battery icon by https://pictogrammers.com/contributor/mririgoyen/
+
 ---
 
 [vue-audio-level-meter](https://github.com/suterma/vue-audio-level-meter) is created with love by [Marcel Suter](https://marcelsuter.ch) for the [Replayer](https://replayer.app) project.
