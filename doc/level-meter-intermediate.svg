@@ -23,7 +23,7 @@
      showgrid="true"
      inkscape:lockguides="true"
      inkscape:zoom="19.386511"
-     inkscape:cx="5.0550612"
+     inkscape:cx="5.1066435"
      inkscape:cy="9.9553757"
      inkscape:window-width="1920"
      inkscape:window-height="1137"
@@ -36,27 +36,6 @@
        id="grid246" />
   </sodipodi:namedview>
   <path
-     d="m 5,17 v 2 h 6 v -2 m 2,0 v 2 h 6 v -2"
-     id="path180"
-     style="stroke-width:0.899023"
-     sodipodi:nodetypes="cccccccc" />
-  <path
-     d="m 5,14 v 2 h 6 v -2 m 2,0 v 2 h 6 v -2"
-     id="path180-1"
-     style="stroke-width:0.899023"
-     sodipodi:nodetypes="cccccccc" />
-  <path
-     d="m 5,11 v 2 h 6 v -2 m 2,0 v 2 h 6 v -2"
-     id="path180-4"
-     style="stroke-width:0.899023"
-     sodipodi:nodetypes="cccccccc" />
-  <path
-     d="m 13,8 v 2 h 6 V 8"
-     id="path180-16"
-     style="stroke-width:0.899023"
-     sodipodi:nodetypes="cccc" />
-  <path
-     d="M 20,20 H 4 V 4 H 20 M 12,2 H 11 9 7 5 4 C 3,2 2,3 2,4 v 16 c 0,1 1,2 2,2 h 16 c 1,0 2,-1 2,-2 V 4 C 22,3 21,2 20,2"
      id="path10"
-     sodipodi:nodetypes="cccccccccsssssssc" />
+     d="M 20,20 H 4 V 4 H 20 M 12,2 H 11 9 7 5 4 C 3,2 2,3 2,4 v 16 c 0,1 1,2 2,2 h 16 c 1,0 2,-1 2,-2 V 4 C 22,3 21,2 20,2 m -7,6 v 2 h 6 V 8 M 5,11 v 2 h 6 v -2 m 2,0 v 2 h 6 V 11 M 5,14 v 2 h 6 v -2 m 2,0 v 2 h 6 V 14 M 5,17 v 2 h 6 v -2 m 2,0 v 2 h 6 v -2" />
 </svg>
