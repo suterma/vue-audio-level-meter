@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "prettier.singleAttributePerLine": true,
+    "prettier.singleQuote": true,
+    "html.completion.attributeDefaultValue": "singlequotes"
+  }
+}
