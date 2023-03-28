@@ -69,6 +69,7 @@ npm run test
 - [typescript](https://github.com/Microsoft/TypeScript), a language for application-scale JavaScript. (Released under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0), by Microsoft)
 - [vue-tsc](https://github.com/johnsoncodehk/volar), high-performance tooling for Vue. (Released under the [MIT License](https://opensource.org/license/mit/), by Johnson Chu)
 - [Inkscape](https://inkscape.org/), draw freely. (Released under the [GPLv2 License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html))
+- [RealFaviconGenerator](https://realfavicongenerator.net/) Favicon Generator. For real. (free to use)
 
 ## Inspiration from
 
