@@ -60,7 +60,7 @@ import DemoWidget from './documentation/DemoWidget.vue';
               <!-- <Introduction /> -->
             </article>
 
-            <h3 id="basic-examples" class="title is-3">Basic examples</h3>
+            <h3 id="basic-examples" class="title is-3">Basic example</h3>
             <article class="example">
               <ExampleWithTheBasics />
             </article>

@@ -70,6 +70,7 @@ npm run test
 - [vue-tsc](https://github.com/johnsoncodehk/volar), high-performance tooling for Vue. (Released under the [MIT License](https://opensource.org/license/mit/), by Johnson Chu)
 - [Inkscape](https://inkscape.org/), draw freely. (Released under the [GPLv2 License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html))
 - [RealFaviconGenerator](https://realfavicongenerator.net/) Favicon Generator. For real. (free to use)
+*   [@highlightjs/vue-plugin](https://github.com/highlightjs/vue-plugin), provides a highlightjs component for use in your Vue.js 3 applications. (Released under the BSD-3-Clause license, by the highlight.js team)
 
 ## Inspiration from
 
