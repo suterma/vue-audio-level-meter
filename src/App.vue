@@ -2,6 +2,7 @@
 import ExampleWithTheBasics from './documentation/ExampleWithTheBasics.vue';
 import Credits from './documentation/Credits.vue';
 import DemoWidget from './documentation/DemoWidget.vue';
+import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
 </script>
 
 <template>
@@ -29,13 +30,8 @@ import DemoWidget from './documentation/DemoWidget.vue';
           <aside class="is-medium menu">
             <p class="menu-label">Topics</p>
             <ul class="menu-list">
-              <li><a href="#basic-examples"> Basic examples</a></li>
-              <!-- <li><a href="#available-properties"> Properties</a></li>
-              <li><a href="#setting-styles">Setting styles</a></li>
-              <li><a href="#using-slots">Using slots</a></li>
-              <li><a href="#using-options">Options</a></li>
-              <li><a href="#accessing-instance">Accessing the instance</a></li>
-              <li><a href="#using-reactivity">Using reactivity</a></li> -->
+              <li><a href="#basic-examples"> Basic example</a></li>
+              <li><a href="#complete-examples"> Complete example</a></li>
               <li><a href="#player-widget">A widget</a></li>
               <li><a href="#credits">Credits</a></li>
             </ul>
@@ -43,7 +39,10 @@ import DemoWidget from './documentation/DemoWidget.vue';
         </div>
         <div class="column is-10">
           <div class="content">
-            <h3 id="introduction" class="title is-3">Introduction</h3>
+            <h3
+              id="introduction"
+              class="title is-3"
+            >Introduction</h3>
             <article class="example">
               <ul>
                 <li>//TODO Write about the audio context stuff</li>
@@ -61,19 +60,36 @@ import DemoWidget from './documentation/DemoWidget.vue';
               <!-- <Introduction /> -->
             </article>
 
-            <h3 id="basic-examples" class="title is-3">Basic example</h3>
+            <h3
+              id="basic-examples"
+              class="title is-3"
+            >Basic example</h3>
             <article class="example">
               <ExampleWithTheBasics />
             </article>
 
-            <h3 id="audio-level-meter-widget" class="title is-3">
+            <h3
+              id="complete-examples"
+              class="title is-3"
+            >Complete example</h3>
+            <article class="example">
+              <ExampleWithEverything />
+            </article>
+
+            <h3
+              id="audio-level-meter-widget"
+              class="title is-3"
+            >
               An audio level meter widget including a player
             </h3>
             <article class="example">
               <DemoWidget />
             </article>
 
-            <h3 id="credits" class="title is-3">Credits</h3>
+            <h3
+              id="credits"
+              class="title is-3"
+            >Credits</h3>
             <article class="example">
               <Credits />
             </article>
@@ -87,9 +103,7 @@ import DemoWidget from './documentation/DemoWidget.vue';
     <section class="section">
       <div class="container has-text-centered">
         <p>
-          <a href="https://github.com/suterma/vue-audio-level-meter"
-            >vue-audio-level-meter</a
-          >
+          <a href="https://github.com/suterma/vue-audio-level-meter">vue-audio-level-meter</a>
           is created with love by
           <a href="https://marcelsuter.ch">Marcel Suter</a> for the
           <a href="http://replayer.app">Replayer</a>
@@ -104,5 +118,4 @@ import DemoWidget from './documentation/DemoWidget.vue';
 .logo {
   display: block;
   margin: 0 auto 2rem;
-}
-</style>
+}</style>
