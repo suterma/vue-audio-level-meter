@@ -1,89 +1,102 @@
 <template>
-    <div class="columns is-desktop">
-        <div class="column">
-            <p>This is the most basic example. You need:
-            <ul>
-                <li>a running <b>audio context</b></li>
-                <li>an <b>audio element</b> with:
-                    <ul>
-                     <li>the <code>src</code> set</li>
-                     <li>a <code>ref</code> defined</li>
-                     <li>optionally the default <code>controls</code> (or your own controls)</li> 
-                </ul>                
-                </li>
-                <li>an <b>AudioLevelMeter</b> component instance with the <code>audioContext</code> and the
-                    <code>audioSource</code> properties set</li>
-            </ul>
-            </p>
-            <p>You might use an audio element event to resume the audio context, if required, like this example does.</p>
-            <p>
-                At component mount time, the ref is invoked to actually create an audio node
-                for the analyzer.
-            </p>
-            <highlightjs language='vue-template' code='<audio 
-    src="lidija_roos-not_for_sale.mp3" 
-    ref="audioElement" 
-    controls @play="resumeAudioContext()"></audio>
-<AudioLevelMeter 
-    v-if="audioSource" 
-    :audioSource="audioSource" 
-    :audioContext="context"/>' />
-    <highlightjs language='vue-typescript'
-                code="import AudioLevelMeter from './../components/AudioLevelMeter.vue';" />
-                <p>
-                    //TODO finish these snippets with the example, once it's complete
-
-                </p>
-        </div>
-        <div class="column">
-            <div class="box">
-                <audio src="lidija_roos-not_for_sale.mp3" ref="audioElement" controls @play="resumeAudioContext()"></audio>
-                <AudioLevelMeter v-if="audioSource" :audioSource="audioSource" :audioContext="context" />
-            </div>
-        </div>
+  <div class="columns is-desktop">
+    <div class="column">
+      <p>You need:
+      <ul>
+        <li>a running <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext"> Audio Context</a> from the
+          Web Audio API</li>
+        <li>an <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio">HTML audio element</a> with:
+          <ul>
+            <li>the <code>src</code> set</li>
+            <li>a <code>ref</code> defined</li>
+            <li>optionally the default <code>controls</code> (or your own controls)</li>
+          </ul>
+        </li>
+        <li>an <b>AudioLevelMeter</b> component instance with the <code>audioContext</code> and the
+          <code>audioSource</code> properties set
+        </li>
+      </ul>
+      </p>
+      <div class="box">
+        <BasicExample></BasicExample>
+      </div>
     </div>
+    <div class="column">
+      <p>Here's how the template might look like:</p>
+      <highlightjs
+        language='vue-template'
+        code='<audio 
+      src="lidija_roos-not_for_sale.mp3" 
+      ref="audioElement" 
+      controls @play="resumeAudioContext()"></audio>
+  <AudioLevelMeter 
+      v-if="audioSource" 
+      :audioSource="audioSource" 
+      :audioContext="context"/>'
+      />
+      <p>Here's how to set up the audio source and audio context for the above template:</p>
+      <highlightjs
+        language='vue-typescript'
+        code="<script setup lang='ts'> 
+  import AudioLevelMeter from './AudioLevelMeter.vue';
+  import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
+
+  /**
+    *  Creating the AudioContext to use
+    *  @devdoc webkitAudioContext supports older versions of Safari
+    */
+  const context = shallowRef(
+    new (window.AudioContext || window.webkitAudioContext)()
+  );
+
+  /** A reference to the audio element to use
+    */
+  const audioElement = ref<InstanceType<typeof HTMLAudioElement> | null>(null);
+
+  /** The audio source node to use by the meter
+    */
+  const audioSource: ShallowRef<InstanceType<
+    typeof MediaElementAudioSourceNode
+  > | null> = shallowRef(null);
+
+  /** Resumes the audio context after the user's first page interaction, if necessary.
+    */
+  async function resumeAudioContext() {
+    if (context.value.state === 'suspended') {
+      await context.value.resume();
+    }
+  }
+
+  /** @devdoc Note that you can only access the ref after the component is mounted. */
+  onMounted(() => {
+    if (audioElement.value) {
+      audioSource.value = context.value.createMediaElementSource(
+        audioElement.value
+      );
+      audioSource.value.connect(context.value.destination);
+    }
+  });
+
+  /** @devdoc A little housekeeping */
+  onUnmounted(() => {
+    audioSource.value?.disconnect(context.value.destination);
+    // The media element and the source will be garbage collected
+  });
+  </script>
+  "
+      />
+      <p>You might use an audio element event to resume the audio context, if required, like this example does.</p>
+      <p>
+        At component mount time, the ref is invoked to actually create an audio node
+        for the analyzer.
+      </p>
+      <p>
+        //TODO finish these snippets with the example, once it's complete
+
+      </p>
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
-import AudioLevelMeter from './../components/AudioLevelMeter.vue';
-import { onMounted, ref, ShallowRef, shallowRef } from 'vue';
-
-/**
- *  Defining the AudioContext
- *  @devdoc webkitAudioContext supports older versions of Safari
- */
-const context = shallowRef(new (window.AudioContext || window.webkitAudioContext)());
-
-/** Audio element to use
- */
-const audioElement = ref<InstanceType<typeof HTMLAudioElement> | null>(null);
-
-// NOTE: When creating the audio source as a MediaElementAudioSourceNode, if the source URL is not CORS-enabled, the MediaElementAudioSourceNode outputs all zeroes.
-// Thus, no audio is heard and also the level meter shows no data
-//TODO: first check whether the resource allows for CORS, then enable the MediaElementAudioSourceNode and the level meter. Otherwise,
-//do not use the MediaElementAudioSourceNode and the meter, and just let the audio element play it's content directly to the output.
-/** The optional audio source node, required when for metering is requested
- */
-const audioSource: ShallowRef<InstanceType<
-    typeof MediaElementAudioSourceNode
-> | null> = shallowRef(null);
-
-/** Resumes the audio context after manual page interaction, if necessary.
- */
- async function resumeAudioContext() {
-    if (context.value.state === 'suspended') {
-        await context.value.resume();
-        console.info('Resumed audio context');
-    }
-
-}
-
-onMounted(() => {
-    // Note that you can only access the ref after the component is mounted.
-    if (audioElement.value) {
-        audioSource.value = context.value.createMediaElementSource(
-            audioElement.value
-        );
-        audioSource.value.connect(context.value.destination);
-    }
-});
+import BasicExample from '../components/BasicExample.vue';
 </script>

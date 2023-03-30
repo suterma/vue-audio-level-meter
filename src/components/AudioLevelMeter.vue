@@ -1,47 +1,26 @@
 <template>
-    <div>
-        <p>
-            RMS
-            <meter
-                class="audio-level-meter rms"
-                :disabled="disabled"
-                ref="rmsLevelMeter"
-                min="-60"
-                max="0"
-                value="-60"
-                title="dBFS (RMS)"
-            >
-                RMS level
-            </meter>
-            <span ref="rmsLevelDisplay">—</span> dB
-        </p>
-
-        <p>
-            Peak
-            <meter
-                class="audio-level-meter peak"
-                :disabled="disabled"
-                ref="peakLevelMeter"
-                min="-60"
-                max="0"
-                value="-60"
-                title="dBFS (peak)"
-            >
-                Peak level
-            </meter>
-            <span ref="peakLevelDisplay">—</span> dB
-        </p>
-    </div>
+  <meter
+    class="audio-level-meter"
+    :disabled="disabled"
+    ref="levelMeter"
+    :min="minLevel"
+    :max="fullScaleLevel"
+    :value="clampedLevel"
+    title="dBFS (peak)"
+  >
+    {{ clampedLevel }} dbFS
+  </meter>
+  <span :class='{ disabled: disabled }'>{{ clampedLevelText }} </span> dB
 </template>
 
 <script setup lang="ts">
 import {
-    onMounted,
-    defineProps,
-    onUnmounted,
-    ref,
-    PropType,
-    computed,
+  onMounted,
+  defineProps,
+  onUnmounted,
+  ref,
+  PropType,
+  computed,
 } from 'vue';
 import { useElementBounding } from '@vueuse/core';
 
@@ -50,24 +29,63 @@ import { useElementBounding } from '@vueuse/core';
  */
 
 const props = defineProps({
-    /** The audio source node to use.
-     */
-    audioSource: {
-        type: AudioNode,
-        required: true,
-    },
-    /** The audio context to use.
-     */
-    audioContext: {
-        //Defining other than straight AudioContext is necessary for iOS < v14 compatibility of the compiled code
-        type: null as unknown as PropType<AudioContext>,
-        required: true,
-    },
+  /** The audio source node to use.
+   */
+  audioSource: {
+    type: AudioNode,
+    required: true,
+  },
+  /** The audio context to use.
+   */
+  audioContext: {
+    //Defining other than straight AudioContext is necessary for iOS < v14 compatibility of the compiled code
+    type: null as unknown as PropType<AudioContext>,
+    required: true,
+  },
 
-    /** Whether to show the component in a disabled state
-     * @devdoc This attribute is processed with "fallthrough", to propagate the state to the inner elements.
-     */
-    disabled: Boolean,
+  /** The minimum level value to display, in [dBFS]. Default is -48.
+    * @remarks This indicates the level to use for the low end in the display.
+ */
+  minLevel: {
+    type: Number,
+    required: false,
+    default: -48
+  },
+
+  /** The optimum level value to display, in [dBFS]. Default is -12.
+   * @remarks The term optimum does make little sense in already processed signals. 
+   * Here, however, it is used to indicate the start of the "yellow" area in the display.
+*/
+  optimumLevel: {
+    type: Number,
+    required: false,
+    default: -12
+  },
+
+  /** The overload level value to display, in [dBFS]. Default is -3.
+   * @remarks The term overload does make little sense in already processed signals. 
+   * Here, however, it is used to indicate the start of the "red" area in the display.
+*/
+  overloadLevel: {
+    type: Number,
+    required: false,
+    default: -3
+  },
+
+  /** The full scale level value (max value) to display, in [dBFS]. Default is 0.
+   * @remarks A definition of "Full Scale" does make little sense in already processed signals. 
+   * Here, however, it is used to indicate the level to use for the top end in the display.
+ */
+  fullScaleLevel: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+
+  /** Whether to show the component in a disabled state
+   * @devdoc This attribute is processed with "fallthrough", to propagate the state to the inner elements.
+   */
+  disabled: Boolean,
 });
 
 let analyser: AnalyserNode;
@@ -90,126 +108,108 @@ let floatSampleBuffer: Float32Array;
 let byteSampleBuffer: Uint8Array;
 
 let loopRequestId: number;
-const rmsLevelMeter = ref(null);
-const peakLevelMeter = ref(null);
-const rmsLevelDisplay = ref(null);
-const peakLevelDisplay = ref(null);
+
+const levelMeter = ref(null);
+
+/** The value of the signal Starts with the minimum level. */
+const value = ref(props.minLevel);
+
+/** The value, the meter actually displays in dBFS. */
+const clampedLevel = computed(() => Math.min(props.fullScaleLevel, Math.max(props.minLevel, value.value)))
+
+/** The textual representation of the signal level. */
+const clampedLevelText = computed(() => isFinite(value.value) ? value.value.toFixed(2) : '—')
+
+/** The value range, the meter displays in dB. */
+const range = computed(() => props.fullScaleLevel - props.minLevel)
+
+
 
 onMounted(() => {
-    console.debug('TrackAudioLevelMeter::onMounted');
+  console.debug('AudioLevelMeter::onMounted');
 
-    analyser = props.audioContext.createAnalyser();
+  analyser = props.audioContext.createAnalyser();
 
-    canUseFloatTimeDomainData =
-        typeof analyser.getFloatTimeDomainData === 'function';
+  canUseFloatTimeDomainData =
+    typeof analyser.getFloatTimeDomainData === 'function';
 
-    // Time domain samples are always provided with the count of
-    // fftSize (which is always a power of two) even though there is no FFT involved.
-    // The value of 1024 has been empirically determined to be high enough to also include
-    // bass and drum kick sounds in the calculated level at a reasonable degree.
-    // You may set to a higher value to trade computational expense for more accuracy.
-    analyser.fftSize = 1024;
+  // Time domain samples are always provided with the count of
+  // fftSize (which is always a power of two) even though there is no FFT involved.
+  // The value of 1024 has been empirically determined to be high enough to also include
+  // bass and drum kick sounds in the calculated level at a reasonable degree.
+  // You may set to a higher value to trade computational expense for more accuracy.
+  analyser.fftSize = 1024;
 
-    if (canUseFloatTimeDomainData) {
-        floatSampleBuffer = new Float32Array(analyser.fftSize);
-    } else {
-        byteSampleBuffer = new Uint8Array(analyser.fftSize);
-    }
+  if (canUseFloatTimeDomainData) {
+    floatSampleBuffer = new Float32Array(analyser.fftSize);
+  } else {
+    byteSampleBuffer = new Uint8Array(analyser.fftSize);
+  }
 
-    props.audioSource.connect(analyser);
-    loop();
+  props.audioSource.connect(analyser);
+  loop();
 });
 
 onUnmounted(() => {
-    cancelAnimationFrame(loopRequestId);
-    analyser.disconnect(); //the input
+  cancelAnimationFrame(loopRequestId);
+  analyser.disconnect(); //the input
 });
 
-function displayNumber(
-    meter: HTMLMeterElement,
-    text: HTMLSpanElement,
-    value: number,
-): void {
-    if (text) {
-        text.textContent = value.toFixed(2);
-    }
-    if (meter) {
-        meter.value = isFinite(value) ? value : meter.min;
-    }
-}
 
 function loop() {
-    if (canUseFloatTimeDomainData) {
-        analyser.getFloatTimeDomainData(floatSampleBuffer);
-    } else {
-        analyser.getByteTimeDomainData(byteSampleBuffer);
+  if (canUseFloatTimeDomainData) {
+    analyser.getFloatTimeDomainData(floatSampleBuffer);
+  } else {
+    analyser.getByteTimeDomainData(byteSampleBuffer);
+  }
+
+  // Compute average power over the interval.
+  let sumOfSquares = 0;
+  let avgPowerDecibels: number;
+
+  if (canUseFloatTimeDomainData) {
+    for (let i = 0; i < floatSampleBuffer.length; i++) {
+      const sample = floatSampleBuffer[i];
+      if (sample) {
+        sumOfSquares += sample ** 2;
+      }
     }
-
-    // Compute average power over the interval.
-    let sumOfSquares = 0;
-    let avgPowerDecibels: number;
-
-    if (canUseFloatTimeDomainData) {
-        for (let i = 0; i < floatSampleBuffer.length; i++) {
-            const sample = floatSampleBuffer[i];
-            if (sample) {
-                sumOfSquares += sample ** 2;
-            }
-        }
-        avgPowerDecibels =
-            10 * Math.log10(sumOfSquares / floatSampleBuffer.length);
-    } else {
-        for (let i = 0; i < byteSampleBuffer.length; i++) {
-            const sample = byteSampleBuffer[i];
-            if (sample) {
-                sumOfSquares += (sample / 128 - 1) ** 2;
-            }
-        }
-        avgPowerDecibels =
-            10 * Math.log10(sumOfSquares / byteSampleBuffer.length);
+    avgPowerDecibels = 10 * Math.log10(sumOfSquares / floatSampleBuffer.length);
+  } else {
+    for (let i = 0; i < byteSampleBuffer.length; i++) {
+      const sample = byteSampleBuffer[i];
+      if (sample) {
+        sumOfSquares += (sample / 128 - 1) ** 2;
+      }
     }
+    avgPowerDecibels = 10 * Math.log10(sumOfSquares / byteSampleBuffer.length);
+  }
 
-    // Compute peak power over the interval.
-    let peakInstantaneousPower = 0;
-    let peakInstantaneousPowerDecibels: number;
-    if (canUseFloatTimeDomainData) {
-        for (let i = 0; i < floatSampleBuffer.length; i++) {
-            const sample = floatSampleBuffer[i];
-            if (sample) {
-                const power = sample ** 2;
-                peakInstantaneousPower = Math.max(
-                    power,
-                    peakInstantaneousPower,
-                );
-            }
-        }
-    } else {
-        for (let i = 0; i < byteSampleBuffer.length; i++) {
-            const sample = byteSampleBuffer[i];
-            if (sample) {
-                const power = (sample / 128 - 1) ** 2;
-                peakInstantaneousPower = Math.max(
-                    power,
-                    peakInstantaneousPower,
-                );
-            }
-        }
+  // Compute peak power over the interval.
+  let peakInstantaneousPower = 0;
+  let peakInstantaneousPowerDecibels: number;
+  if (canUseFloatTimeDomainData) {
+    for (let i = 0; i < floatSampleBuffer.length; i++) {
+      const sample = floatSampleBuffer[i];
+      if (sample) {
+        const power = sample ** 2;
+        peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+      }
     }
-    peakInstantaneousPowerDecibels = 10 * Math.log10(peakInstantaneousPower);
+  } else {
+    for (let i = 0; i < byteSampleBuffer.length; i++) {
+      const sample = byteSampleBuffer[i];
+      if (sample) {
+        const power = (sample / 128 - 1) ** 2;
+        peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+      }
+    }
+  }
+  peakInstantaneousPowerDecibels = 10 * Math.log10(peakInstantaneousPower);
 
-    displayNumber(
-        rmsLevelMeter.value as unknown as HTMLMeterElement,
-        rmsLevelDisplay.value as unknown as HTMLSpanElement,
-        avgPowerDecibels,
-    );
+  value.value = peakInstantaneousPowerDecibels;
 
-    displayNumber(
-        peakLevelMeter.value as unknown as HTMLMeterElement,
-        peakLevelDisplay.value as unknown as HTMLSpanElement,
-        peakInstantaneousPowerDecibels,
-    );
-
-    loopRequestId = requestAnimationFrame(loop);
+  loopRequestId = requestAnimationFrame(loop);
 }
 
 // --- meter styles, depending on actual component extent ---
@@ -217,56 +217,57 @@ function loop() {
 /** The styles for the meter range element are dynamically calculated to be able to
  * use a pixel-defined gradient. This makes the gradient regions visually fixed (non-dependent from the
  * actual meter value)
+ * @devdoc See https://stackoverflow.com/a/69078238/79485 for the v-bind mechanism
  */
-//See https://stackoverflow.com/a/69078238/79485 for the v-bind mechanism
-const { width } = useElementBounding(rmsLevelMeter);
+const { width } = useElementBounding(levelMeter);
 
 /** 0dBFS */
 const widthFullScale = computed(() => {
-    return `${width.value}px`;
+  return `${width.value}px`;
 });
-/** Overload warning at -3dBFS */
+/** Overload warning */
 const widthWarnOverload = computed(() => {
-    return `${width.value * 0.95}px`;
+  return `${width.value * (1 - (1 / range.value) * (props.fullScaleLevel - props.overloadLevel))}px`;
+
 });
 
-/** Saturation at -12dBFS */
+/** Saturation */
 const widthSaturation = computed(() => {
-    return `${width.value * 0.8}px`;
+  return `${width.value * (1 - (1 / range.value) * (props.fullScaleLevel - props.optimumLevel))}px`;
 });
 
-/** Scale minimum is at -60dBFS */
+/** Scale minimum */
 const widthMinimum = computed(() => {
-    return `${0}px`;
+  return `${0}px`;
 });
 </script>
 <style lang="css">
 .audio-level-meter {
-    width: 100%;
-    height: 1.5em;
-    background-color: transparent;
-    border: none;
-    border-radius: 4px;
+  width: 100%;
+  height: 1.5em;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
 }
 
 meter::-webkit-meter-bar {
-    background: none; /* Required to get rid of the default background property */
-    background-color: black;
-    border: 0px; /* do not show a border (border none seems not to work)*/
-    border-radius: 4px;
-    height: 1em;
+  background: none;
+  /* Required to get rid of the default background property */
+  background-color: black;
+  border: 0px;
+  /* do not show a border (border none seems not to work)*/
+  border-radius: 4px;
+  height: 1em;
 }
 
 /* See also https://css-tricks.com/html5-meter-element/ */
 meter::-webkit-meter-optimum-value {
-    background-image: linear-gradient(
-        90deg,
-        #62c462 v-bind('widthMinimum'),
-        #62c462 v-bind('widthSaturation'),
-        #f9e406 v-bind('widthSaturation'),
-        #f9e406 v-bind('widthWarnOverload'),
-        #ee5f5b v-bind('widthWarnOverload'),
-        #ee5f5b v-bind('widthFullScale')
-    );
+  background-image: linear-gradient(90deg,
+      #62c462 v-bind('widthMinimum'),
+      #62c462 v-bind('widthSaturation'),
+      #f9e406 v-bind('widthSaturation'),
+      #f9e406 v-bind('widthWarnOverload'),
+      #ee5f5b v-bind('widthWarnOverload'),
+      #ee5f5b v-bind('widthFullScale'));
 }
 </style>
