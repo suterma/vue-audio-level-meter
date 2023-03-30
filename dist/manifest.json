@@ -1,6 +1,6 @@
 {
   "index.css": {
-    "file": "assets/index-992bb3e5.css",
+    "file": "assets/index-b96f753b.css",
     "src": "index.css"
   },
   "index.html": {
@@ -8,9 +8,9 @@
       "assets/vue-audio-level-meter-logo-b3a1f441.svg"
     ],
     "css": [
-      "assets/index-992bb3e5.css"
+      "assets/index-b96f753b.css"
     ],
-    "file": "assets/index-b2374136.js",
+    "file": "assets/index-1178092a.js",
     "isEntry": true,
     "src": "index.html"
   },
