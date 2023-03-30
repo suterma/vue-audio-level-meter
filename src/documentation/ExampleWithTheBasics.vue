@@ -1,18 +1,23 @@
 <template>
     <div class="columns is-desktop">
         <div class="column">
-            <p>This is the most basic example:
+            <p>This is the most basic example. You need:
             <ul>
-                <li>Having or creating a running <b>audio context</b></li>
-                <li>Declaring an <b>audio element</b> with a source, a ref, optionally some controls and the ability to
-                    resume the audio context, if required</li>
-                <li>Showing an <b>AudioLevelMeter</b> component which gets an audio context and the
-                    MediaElementAudioSourceNode from the audio element</li>
+                <li>a running <b>audio context</b></li>
+                <li>an <b>audio element</b> with:
+                    <ul>
+                     <li>the <code>src</code> set</li>
+                     <li>a <code>ref</code> defined</li>
+                     <li>optionally the default <code>controls</code> (or your own controls)</li> 
+                </ul>                
+                </li>
+                <li>an <b>AudioLevelMeter</b> component instance with the <code>audioContext</code> and the
+                    <code>audioSource</code> properties set</li>
             </ul>
             </p>
+            <p>You might use an audio element event to resume the audio context, if required, like this example does.</p>
             <p>
-                The using component should declare the audio element, with the given source URL, and a
-                ref to it. At component mount time, the ref is invoked to actually create an audio node
+                At component mount time, the ref is invoked to actually create an audio node
                 for the analyzer.
             </p>
             <highlightjs language='vue-template' code='<audio 
@@ -24,7 +29,11 @@
     :audioSource="audioSource" 
     :audioContext="context"/>' />
     <highlightjs language='vue-typescript'
-                code="import AudioPeaks from 'vue-peaks/src/components/AudioPeaks.vue';" />
+                code="import AudioLevelMeter from './../components/AudioLevelMeter.vue';" />
+                <p>
+                    //TODO finish these snippets with the example, once it's complete
+
+                </p>
         </div>
         <div class="column">
             <div class="box">
