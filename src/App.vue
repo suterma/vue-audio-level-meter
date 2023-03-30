@@ -43,19 +43,20 @@ import DemoWidget from './documentation/DemoWidget.vue';
         </div>
         <div class="column is-10">
           <div class="content">
-            <!-- <h3 id="introduction" class="title is-3">Introduction</h3> -->
+            <h3 id="introduction" class="title is-3">Introduction</h3>
             <article class="example">
-              //TODO
-
-
-
-//TODO write about d type for webkitAudioContext //TODO write about
-  CORS-enabled //TODO write about mounting //TODO write about the key //TODO
-  create the minimal example //TODO try also a CORS-restricted file
-  src="lidija_roos-not_for_sale.mp3" src
-  ="https://lib.replayer.app/your-light-by-lidija-roos.mp3"
-
-  //NOTE If you change the source, you need to use :key="props.mediaUrl"
+              <ul>
+                <li>//TODO Write about the audio context stuff</li>
+                //TODO write about CORS-enabled resources and limitations
+                <li>//TODO write about mounting</li>
+                <li>
+                  //TODO write about the key: If you change the source, you need
+                  to use :key="props.mediaUrl"
+                </li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
 
               <!-- <Introduction /> -->
             </article>

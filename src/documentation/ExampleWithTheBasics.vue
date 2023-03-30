@@ -37,13 +37,12 @@
 <script setup lang="ts">
 import AudioLevelMeter from './../components/AudioLevelMeter.vue';
 import { onMounted, ref, ShallowRef, shallowRef } from 'vue';
+
 /**
  *  Defining the AudioContext
  *  @devdoc webkitAudioContext supports older versions of Safari
  */
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContext();
-const context = shallowRef(audioContext);
+const context = shallowRef(new (window.AudioContext || window.webkitAudioContext)());
 
 /** Audio element to use
  */
