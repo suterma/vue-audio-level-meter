@@ -93,18 +93,22 @@ const widthMinimum = computed(() => {
 meter.level-meter {
   width: 100%;
   height: 1em;
-  /* Required to get rid of the default background property */
-  background-color: black;
+  /* Required to get rid of the default background property
+   * @devoc "background" (without -color) is additionally required for Firefox
+   */
+  background-color: #000;
+  background: #000;
   /* do not show a border (border none seems not to work)*/
   border: none;
   border-radius: 4px;
 }
 
+/* ------------------------------------------------------------------------- */
+
 /** The styles for the meter bar (Firefox)
 * @devdoc For Firefox (moz), see https://support.mozilla.org/en-US/questions/1308191 
 * These must stand separately from webkit, because otherwise they would disturb each other 
 */
-
 meter.level-meter::-moz-meter-bar {
   background-image: linear-gradient(90deg,
       #62c462 v-bind('widthMinimum'),
@@ -115,9 +119,22 @@ meter.level-meter::-moz-meter-bar {
       #ee5f5b v-bind('widthMax'));
 }
 
-/** The styles for the meter bar (Chroma and Webkit)
+/* ------------------------------------------------------------------------- */
+
+/** The styles for the meter bar (Chrome and Webkit) 
 * @devdoc For webkit, see https://css-tricks.com/html5-meter-element/ 
 * @devdoc https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-meter-bar */
+meter.level-meter::-webkit-meter-bar {
+  /* Required to get rid of the default background property */
+  background: none;
+  /* do not show a border (border none seems not to work)*/
+  border: 0px;
+  /* Show similar radius for the meter border as for the meter background */
+  border-radius: 4px;
+  /* Show similar height for the meter border as for the meter background */
+  height: 1em;
+}
+
 meter.level-meter::-webkit-meter-optimum-value,
 meter.level-meter::-webkit-meter-suboptimum-value,
 meter.level-meter::-webkit-meter-even-less-good-value {

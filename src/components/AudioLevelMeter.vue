@@ -1,15 +1,8 @@
 <template>
-  <meter
-    class="audio-level-meter"
-    :disabled="disabled"
-    ref="levelMeter"
-    :min="minLevel"
-    :max="fullScaleLevel"
-    :value="clampedLevel"
-    title="dBFS (peak)"
-  >
+  <LevelMeter :disabled="disabled" :minLevel="minLevel" :lowLevel='optimumLevel' :highLevel='overloadLevel'
+    :maxLevel="fullScaleLevel" :value="clampedLevel" title="dBFS (peak)">
     {{ clampedLevel }} dbFS
-  </meter>
+  </LevelMeter>
   <span :class='{ disabled: disabled }'>{{ clampedLevelText }} </span> dB
 </template>
 
@@ -22,7 +15,7 @@ import {
   PropType,
   computed,
 } from 'vue';
-import { useElementBounding } from '@vueuse/core';
+import LevelMeter from './LevelMeter.vue';
 
 /** An simple audio level meter (visualizer), for a single audio source node, using the Web Audio API.
  * @remarks Internally uses the Web Audio API's AnalyserNode. Therefore, because it down-mixes time domain data (See https://webaudio.github.io/web-audio-api/#time-domain-down-mixing), the level is only mono.
@@ -211,63 +204,4 @@ function loop() {
 
   loopRequestId = requestAnimationFrame(loop);
 }
-
-// --- meter styles, depending on actual component extent ---
-
-/** The styles for the meter range element are dynamically calculated to be able to
- * use a pixel-defined gradient. This makes the gradient regions visually fixed (non-dependent from the
- * actual meter value)
- * @devdoc See https://stackoverflow.com/a/69078238/79485 for the v-bind mechanism
- */
-const { width } = useElementBounding(levelMeter);
-
-/** 0dBFS */
-const widthFullScale = computed(() => {
-  return `${width.value}px`;
-});
-/** Overload warning */
-const widthWarnOverload = computed(() => {
-  return `${width.value * (1 - (1 / range.value) * (props.fullScaleLevel - props.overloadLevel))}px`;
-
-});
-
-/** Saturation */
-const widthSaturation = computed(() => {
-  return `${width.value * (1 - (1 / range.value) * (props.fullScaleLevel - props.optimumLevel))}px`;
-});
-
-/** Scale minimum */
-const widthMinimum = computed(() => {
-  return `${0}px`;
-});
 </script>
-<style lang="css">
-.audio-level-meter {
-  width: 100%;
-  height: 1.5em;
-  background-color: transparent;
-  border: none;
-  border-radius: 4px;
-}
-
-meter::-webkit-meter-bar {
-  background: none;
-  /* Required to get rid of the default background property */
-  background-color: black;
-  border: 0px;
-  /* do not show a border (border none seems not to work)*/
-  border-radius: 4px;
-  height: 1em;
-}
-
-/* See also https://css-tricks.com/html5-meter-element/ */
-meter::-webkit-meter-optimum-value {
-  background-image: linear-gradient(90deg,
-      #62c462 v-bind('widthMinimum'),
-      #62c462 v-bind('widthSaturation'),
-      #f9e406 v-bind('widthSaturation'),
-      #f9e406 v-bind('widthWarnOverload'),
-      #ee5f5b v-bind('widthWarnOverload'),
-      #ee5f5b v-bind('widthFullScale'));
-}
-</style>
