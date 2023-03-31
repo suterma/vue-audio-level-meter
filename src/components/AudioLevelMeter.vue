@@ -1,9 +1,10 @@
 <template>
-  <LevelMeter :disabled="disabled" :minLevel="minLevel" :lowLevel='optimumLevel' :highLevel='overloadLevel'
-    :maxLevel="fullScaleLevel" :value="clampedLevel" title="dBFS (peak)">
-    {{ clampedLevel }} dbFS
-  </LevelMeter>
-  <span :class='{ disabled: disabled }'>{{ clampedLevelText }} </span> dB
+  <div class='audio-level-container flex-gap'>
+    <LevelMeter class='audio-level-meter' :disabled="disabled" :minLevel="minLevel" :lowLevel='optimumLevel'
+      :highLevel='overloadLevel' :maxLevel="fullScaleLevel" :value="clampedLevel" title="dBFS (peak)">
+    </LevelMeter>
+    <span class='audio-level-text' :class='{ disabled: disabled }'>{{ clampedLevelText }} dB</span>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -205,3 +206,44 @@ function loop() {
   loopRequestId = requestAnimationFrame(loop);
 }
 </script>
+<style lang="css">
+.audio-level-text {
+  font-family: monospace;
+}
+
+.audio-level-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.audio-level-meter,
+.audio-level-text {
+  text-align: center !important;
+  align-items: center;
+  display: flex;
+}
+
+.audio-level-meter {
+  justify-content: flex-start;
+  flex-basis: auto;
+  flex-grow: 5;
+  flex-shrink: 0;
+}
+
+.audio-level-text {
+  justify-content: flex-end;
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 5;
+}
+
+.audio-level-text {
+  min-width: 9ch;
+}
+
+.flex-gap {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+</style>

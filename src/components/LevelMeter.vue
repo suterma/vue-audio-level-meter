@@ -1,7 +1,6 @@
 <template>
   <meter class="level-meter" ref="levelMeter" :min="minLevel" :low="lowLevel" :high="highLevel" :max="maxLevel"
     :value="value">
-    <slot></slot>
   </meter>
 </template>
 
@@ -18,7 +17,6 @@ import {
  * with the min, low, high and max level as exposed properties.
  * @remarks For the CSS classes see https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-meter-bar
  * With this component, coloring is however different, offering a different color per range.
- * @remarks The default slot is the meter content.
  */
 
 const props = defineProps({
@@ -89,9 +87,8 @@ const widthMinimum = computed(() => {
 });
 
 </script>
-<style lang="css">
+<style lang="css" scoped>
 meter.level-meter {
-  width: 100%;
   height: 1em;
   /* Required to get rid of the default background property
    * @devoc "background" (without -color) is additionally required for Firefox
