@@ -1,6 +1,5 @@
 <template>
-  <meter class="level-meter" ref="levelMeter" :min="minLevel" :low="lowLevel" :high="highLevel" :max="maxLevel"
-    :value="value">
+  <meter ref="levelMeter" :min="minLevel" :low="lowLevel" :high="highLevel" :max="maxLevel" :value="value">
   </meter>
 </template>
 
@@ -56,6 +55,7 @@ const props = defineProps({
     required: true,
   },
 
+
 });
 
 const levelMeter = ref(null);
@@ -88,7 +88,7 @@ const widthMinimum = computed(() => {
 
 </script>
 <style lang="css" scoped>
-meter.level-meter {
+meter {
   height: 1em;
   /* Required to get rid of the default background property
    * @devoc "background" (without -color) is additionally required for Firefox
@@ -106,7 +106,7 @@ meter.level-meter {
 * @devdoc For Firefox (moz), see https://support.mozilla.org/en-US/questions/1308191 
 * These must stand separately from webkit, because otherwise they would disturb each other 
 */
-meter.level-meter::-moz-meter-bar {
+meter::-moz-meter-bar {
   background-image: linear-gradient(90deg,
       #62c462 v-bind('widthMinimum'),
       #62c462 v-bind('widthLow'),
@@ -121,7 +121,7 @@ meter.level-meter::-moz-meter-bar {
 /** The styles for the meter bar (Chrome and Webkit) 
 * @devdoc For webkit, see https://css-tricks.com/html5-meter-element/ 
 * @devdoc https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-meter-bar */
-meter.level-meter::-webkit-meter-bar {
+meter::-webkit-meter-bar {
   /* Required to get rid of the default background property */
   background: none;
   /* do not show a border (border none seems not to work)*/
@@ -132,9 +132,9 @@ meter.level-meter::-webkit-meter-bar {
   height: 1em;
 }
 
-meter.level-meter::-webkit-meter-optimum-value,
-meter.level-meter::-webkit-meter-suboptimum-value,
-meter.level-meter::-webkit-meter-even-less-good-value {
+meter::-webkit-meter-optimum-value,
+meter::-webkit-meter-suboptimum-value,
+meter::-webkit-meter-even-less-good-value {
   background-image: linear-gradient(90deg,
       #62c462 v-bind('widthMinimum'),
       #62c462 v-bind('widthLow'),

@@ -1,73 +1,57 @@
 <template>
   <p>
     <label>
+      Algorithm
+      <label>
+        <input type="radio" value="peak" v-model="algorithm"> Peak
+      </label>
+
+      <label>
+        <input type="radio" value="average" v-model="algorithm"> Average
+      </label>
+    </label>
+
+    {{ algorithm }}
+  </p>
+  <p>
+    <label>
       Minimum level (sensitivity) (-96dBFS - 0 dBFS)
-      <input
-        type='range'
-        min='-96'
-        max='0'
-        v-model='minLevel'
-      />
+      <input type='range' min='-96' max='0' v-model='minLevel' />
     </label>
     {{ minLevel }}
   </p>
   <p>
     <label>
       Optimum level (-24dBFS - 0 dBFS)
-      <input
-        type='range'
-        min='-24'
-        max='0'
-        v-model='optimumLevel'
-      />
+      <input type='range' min='-24' max='0' v-model='optimumLevel' />
     </label>
     {{ optimumLevel }}
   </p>
   <p>
     <label>
       Overload level (-15dBFS - +9 dBFS)
-      <input
-        type='range'
-        min='-15'
-        max='9'
-        v-model='overloadLevel'
-      />
+      <input type='range' min='-15' max='9' v-model='overloadLevel' />
     </label>
     {{ overloadLevel }}
   </p>
   <p>
     <label>
       Full scale level (-12dBFS - +12 dBFS)
-      <input
-        type='range'
-        min='-12'
-        max='12'
-        v-model='fullScaleLevel'
-      />
+      <input type='range' min='-12' max='12' v-model='fullScaleLevel' />
     </label>
     {{ fullScaleLevel }}
   </p>
-  <audio
-    src='lidija_roos-not_for_sale.mp3'
-    ref='audioElement'
-    controls
-    @play="resumeAudioContext()"
-  >
+  <audio src='lidija_roos-not_for_sale.mp3' ref='audioElement' controls @play="resumeAudioContext()">
   </audio>
-  <AudioLevelMeter
-    v-if="audioSource && audioContext"
-    :minLevel='minLevel'
-    :optimumLevel='optimumLevel'
-    :overloadLevel='overloadLevel'
-    :fullScaleLevel='fullScaleLevel'
-    :audioSource="audioSource"
-    :audioContext="audioContext"
-  />
+  <AudioLevelMeter v-if="audioSource && audioContext" :minLevel='minLevel' :optimumLevel='optimumLevel'
+    :overloadLevel='overloadLevel' :fullScaleLevel='fullScaleLevel' :audioSource="audioSource"
+    :audioContext="audioContext" :algorithm="algorithm" />
 </template>
 <script setup lang='ts'>
 import AudioLevelMeter from './AudioLevelMeter.vue';
 import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
 
+const algorithm = ref('peak');
 const minLevel = ref(-48);
 const optimumLevel = ref(-12);
 const overloadLevel = ref(-3);

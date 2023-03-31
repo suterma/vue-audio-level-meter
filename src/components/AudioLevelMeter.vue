@@ -76,6 +76,15 @@ const props = defineProps({
     default: 0
   },
 
+  /** The algorithm to use (one of 'peak' (default) or 'average')
+*/
+  algorithm: {
+    type: String,
+    required: false,
+    default: "peak"
+  },
+
+
   /** Whether to show the component in a disabled state
    * @devdoc This attribute is processed with "fallthrough", to propagate the state to the inner elements.
    */
@@ -103,7 +112,7 @@ let byteSampleBuffer: Uint8Array;
 
 let loopRequestId: number;
 
-const levelMeter = ref(null);
+??const levelMeter = ref(null);
 
 /** The value of the signal Starts with the minimum level. */
 const value = ref(props.minLevel);
@@ -161,6 +170,7 @@ function loop() {
   let sumOfSquares = 0;
   let avgPowerDecibels: number;
 
+  if (props.algorithm.....)
   if (canUseFloatTimeDomainData) {
     for (let i = 0; i < floatSampleBuffer.length; i++) {
       const sample = floatSampleBuffer[i];
