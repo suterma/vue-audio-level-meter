@@ -1,9 +1,27 @@
 <template>
   <div class='audio-level-container flex-gap'>
-    <LevelMeter class='audio-level-meter' :disabled="disabled" :minLevel="minLevel" :lowLevel='optimumLevel'
-      :highLevel='overloadLevel' :maxLevel="fullScaleLevel" :value="clampedLevel" title="dBFS (peak)">
+    <LevelMeter
+      v-if='showBar'
+      class='audio-level-meter'
+      :disabled="disabled"
+      :minLevel="minLevel"
+      :lowLevel='lowLevel'
+      :highLevel='highLevel'
+      :maxLevel="maxLevel"
+      :lowRangeColor='lowRangeColor'
+      :midRangeColor='midRangeColor'
+      :highRangeColor='highRangeColor'
+      :backgroundColor='backgroundColor'
+      :value="clampedLevel"
+      title="dBFS (peak)"
+    >
     </LevelMeter>
-    <span class='audio-level-text' :class='{ disabled: disabled }'>{{ clampedLevelText }} dB</span>
+    <span
+      v-if='showText'
+      class='audio-level-text'
+      :disabled="disabled"
+      :class='{ disabled: disabled }'
+    >{{ clampedLevelText }} dB</span>
   </div>
 </template>
 
@@ -46,31 +64,55 @@ const props = defineProps({
     default: -48
   },
 
+  lowRangeColor: {
+    type: String,
+    required: false,
+    default: "#62c462"
+  },
+
   /** The optimum level value to display, in [dBFS]. Default is -12.
    * @remarks The term optimum does make little sense in already processed signals. 
    * Here, however, it is used to indicate the start of the "yellow" area in the display.
 */
-  optimumLevel: {
+  lowLevel: {
     type: Number,
     required: false,
     default: -12
+  },
+
+  midRangeColor: {
+    type: String,
+    required: false,
+    default: "#f9e406"
   },
 
   /** The overload level value to display, in [dBFS]. Default is -3.
    * @remarks The term overload does make little sense in already processed signals. 
    * Here, however, it is used to indicate the start of the "red" area in the display.
 */
-  overloadLevel: {
+  highLevel: {
     type: Number,
     required: false,
     default: -3
+  },
+
+  highRangeColor: {
+    type: String,
+    required: false,
+    default: "#ee5f5b"
+  },
+
+  backgroundColor: {
+    type: String,
+    required: false,
+    default: "#000000"
   },
 
   /** The full scale level value (max value) to display, in [dBFS]. Default is 0.
    * @remarks A definition of "Full Scale" does make little sense in already processed signals. 
    * Here, however, it is used to indicate the level to use for the top end in the display.
  */
-  fullScaleLevel: {
+  maxLevel: {
     type: Number,
     required: false,
     default: 0
@@ -82,6 +124,18 @@ const props = defineProps({
     type: String,
     required: false,
     default: "peak"
+  },
+
+  showBar: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+
+  showText: {
+    type: Boolean,
+    required: false,
+    default: true
   },
 
 
@@ -112,21 +166,17 @@ let byteSampleBuffer: Uint8Array;
 
 let loopRequestId: number;
 
-??const levelMeter = ref(null);
-
 /** The value of the signal Starts with the minimum level. */
 const value = ref(props.minLevel);
 
 /** The value, the meter actually displays in dBFS. */
-const clampedLevel = computed(() => Math.min(props.fullScaleLevel, Math.max(props.minLevel, value.value)))
+const clampedLevel = computed(() => Math.min(props.maxLevel, Math.max(props.minLevel, value.value)))
 
 /** The textual representation of the signal level. */
 const clampedLevelText = computed(() => isFinite(value.value) ? value.value.toFixed(2) : '—')
 
 /** The value range, the meter displays in dB. */
-const range = computed(() => props.fullScaleLevel - props.minLevel)
-
-
+const range = computed(() => props.maxLevel - props.minLevel)
 
 onMounted(() => {
   console.debug('AudioLevelMeter::onMounted');
@@ -166,52 +216,52 @@ function loop() {
     analyser.getByteTimeDomainData(byteSampleBuffer);
   }
 
-  // Compute average power over the interval.
-  let sumOfSquares = 0;
-  let avgPowerDecibels: number;
-
-  if (props.algorithm.....)
-  if (canUseFloatTimeDomainData) {
-    for (let i = 0; i < floatSampleBuffer.length; i++) {
-      const sample = floatSampleBuffer[i];
-      if (sample) {
-        sumOfSquares += sample ** 2;
+  // Compute power over the interval.
+  if (props.algorithm === 'average') {
+    let sumOfSquares = 0;
+    if (canUseFloatTimeDomainData) {
+      for (let i = 0; i < floatSampleBuffer.length; i++) {
+        const sample = floatSampleBuffer[i];
+        if (sample) {
+          sumOfSquares += sample ** 2;
+        }
       }
-    }
-    avgPowerDecibels = 10 * Math.log10(sumOfSquares / floatSampleBuffer.length);
-  } else {
-    for (let i = 0; i < byteSampleBuffer.length; i++) {
-      const sample = byteSampleBuffer[i];
-      if (sample) {
-        sumOfSquares += (sample / 128 - 1) ** 2;
+      /* average power in dB */
+      value.value = 10 * Math.log10(sumOfSquares / floatSampleBuffer.length);
+    } else {
+      for (let i = 0; i < byteSampleBuffer.length; i++) {
+        const sample = byteSampleBuffer[i];
+        if (sample) {
+          sumOfSquares += (sample / 128 - 1) ** 2;
+        }
       }
-    }
-    avgPowerDecibels = 10 * Math.log10(sumOfSquares / byteSampleBuffer.length);
-  }
-
-  // Compute peak power over the interval.
-  let peakInstantaneousPower = 0;
-  let peakInstantaneousPowerDecibels: number;
-  if (canUseFloatTimeDomainData) {
-    for (let i = 0; i < floatSampleBuffer.length; i++) {
-      const sample = floatSampleBuffer[i];
-      if (sample) {
-        const power = sample ** 2;
-        peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
-      }
-    }
-  } else {
-    for (let i = 0; i < byteSampleBuffer.length; i++) {
-      const sample = byteSampleBuffer[i];
-      if (sample) {
-        const power = (sample / 128 - 1) ** 2;
-        peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
-      }
+      /* average power in dB */
+      value.value = 10 * Math.log10(sumOfSquares / byteSampleBuffer.length);
     }
   }
-  peakInstantaneousPowerDecibels = 10 * Math.log10(peakInstantaneousPower);
-
-  value.value = peakInstantaneousPowerDecibels;
+  else if (props.algorithm === 'peak') {
+    let peakInstantaneousPower = 0;
+    if (canUseFloatTimeDomainData) {
+      for (let i = 0; i < floatSampleBuffer.length; i++) {
+        const sample = floatSampleBuffer[i];
+        if (sample) {
+          const power = sample ** 2;
+          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+        }
+      }
+    } else {
+      for (let i = 0; i < byteSampleBuffer.length; i++) {
+        const sample = byteSampleBuffer[i];
+        if (sample) {
+          const power = (sample / 128 - 1) ** 2;
+          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+        }
+      }
+    }
+    /* peak instantaneous power in dB */
+    value.value = 10 * Math.log10(peakInstantaneousPower);
+  }
+  else { throw new Error("algorithm must be on of 'peak', 'average'") }
 
   loopRequestId = requestAnimationFrame(loop);
 }

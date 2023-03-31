@@ -1,5 +1,12 @@
 <template>
-  <meter ref="levelMeter" :min="minLevel" :low="lowLevel" :high="highLevel" :max="maxLevel" :value="value">
+  <meter
+    ref="levelMeter"
+    :min="minLevel"
+    :low="lowLevel"
+    :high="highLevel"
+    :max="maxLevel"
+    :value="value"
+  >
   </meter>
 </template>
 
@@ -19,43 +26,62 @@ import {
  */
 
 const props = defineProps({
-  /** The minimum level
- */
+  /** The minimum level */
   minLevel: {
     type: Number,
     required: true
   },
 
-  /** The low level
-*/
+  /** The low range color (between minimum level and low level) */
+  lowRangeColor: {
+    type: String,
+    required: false,
+    default: "#62c462"
+  },
+
+  /** The low level */
   lowLevel: {
     type: Number,
     required: true,
   },
 
-  /** The high level
-*/
+  /** The mid range color (between low level and high level) */
+  midRangeColor: {
+    type: String,
+    required: false,
+    default: "#f9e406"
+  },
+
+  /** The high level */
   highLevel: {
     type: Number,
     required: true,
-
   },
 
-  /** The maximum level
-*/
+  /** The high range color (between high level and maximum level) */
+  highRangeColor: {
+    type: String,
+    required: false,
+    default: "#ee5f5b"
+  },
+
+  backgroundColor: {
+    type: String,
+    required: false,
+    default: "#000000"
+  },
+
+  /** The maximum level */
   maxLevel: {
     type: Number,
     required: true,
   },
 
-  /** The level value
-*/
+  /** The level value */
   value: {
     type: Number,
     required: true,
   },
-
-
 });
 
 const levelMeter = ref(null);
@@ -79,7 +105,7 @@ const widthHigh = computed(() => {
 });
 
 const widthLow = computed(() => {
-  return `${width.value * (1 - (1 / range.value) * (props.maxLevel - props.lowLevel))}px`;
+  return `${(width.value * (1 - (1 / range.value) * (props.maxLevel - props.lowLevel)))}px`;
 });
 
 const widthMinimum = computed(() => {
@@ -91,10 +117,10 @@ const widthMinimum = computed(() => {
 meter {
   height: 1em;
   /* Required to get rid of the default background property
-   * @devoc "background" (without -color) is additionally required for Firefox
+   * @devdoc "background" (without -color) is additionally required for Firefox
    */
-  background-color: #000;
-  background: #000;
+  background-color: v-bind('backgroundColor');
+  background: v-bind('backgroundColor');
   /* do not show a border (border none seems not to work)*/
   border: none;
   border-radius: 4px;
@@ -108,12 +134,12 @@ meter {
 */
 meter::-moz-meter-bar {
   background-image: linear-gradient(90deg,
-      #62c462 v-bind('widthMinimum'),
-      #62c462 v-bind('widthLow'),
-      #f9e406 v-bind('widthLow'),
-      #f9e406 v-bind('widthHigh'),
-      #ee5f5b v-bind('widthHigh'),
-      #ee5f5b v-bind('widthMax'));
+      v-bind('lowRangeColor') v-bind('widthMinimum'),
+      v-bind('lowRangeColor') v-bind('widthLow'),
+      v-bind('midRangeColor') v-bind('widthLow'),
+      v-bind('midRangeColor') v-bind('widthHigh'),
+      v-bind('highRangeColor') v-bind('widthHigh'),
+      v-bind('highRangeColor') v-bind('widthMax'));
 }
 
 /* ------------------------------------------------------------------------- */
@@ -136,11 +162,11 @@ meter::-webkit-meter-optimum-value,
 meter::-webkit-meter-suboptimum-value,
 meter::-webkit-meter-even-less-good-value {
   background-image: linear-gradient(90deg,
-      #62c462 v-bind('widthMinimum'),
-      #62c462 v-bind('widthLow'),
-      #f9e406 v-bind('widthLow'),
-      #f9e406 v-bind('widthHigh'),
-      #ee5f5b v-bind('widthHigh'),
-      #ee5f5b v-bind('widthMax'));
+      v-bind('lowRangeColor') v-bind('widthMinimum'),
+      v-bind('lowRangeColor') v-bind('widthLow'),
+      v-bind('midRangeColor') v-bind('widthLow'),
+      v-bind('midRangeColor') v-bind('widthHigh'),
+      v-bind('highRangeColor') v-bind('widthHigh'),
+      v-bind('highRangeColor') v-bind('widthMax'));
 }
 </style>
