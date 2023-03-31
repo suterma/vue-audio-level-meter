@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ExampleWithTheBasics from './documentation/ExampleWithTheBasics.vue';
 import Credits from './documentation/Credits.vue';
+import Introduction from './documentation/Introduction.vue';
 import DemoWidget from './documentation/DemoWidget.vue';
 import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
 </script>
@@ -8,13 +9,8 @@ import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
 <template>
   <section class="hero is-light">
     <div class="hero-body has-text-centered">
-      <img
-        alt="vue-audio-level-meter logo"
-        class="logo"
-        src="./assets/vue-audio-level-meter-logo.svg"
-        width="125"
-        height="125"
-      />
+      <img alt="vue-audio-level-meter logo" class="logo" src="./assets/vue-audio-level-meter-logo.svg" width="125"
+        height="125" />
 
       <h1 class="title is-1">vue-audio-level-meter</h1>
       <h2 class="subtitle is-3">
@@ -39,57 +35,29 @@ import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
         </div>
         <div class="column is-10">
           <div class="content">
-            <h3
-              id="introduction"
-              class="title is-3"
-            >Introduction</h3>
+            <h3 id="introduction" class="title is-3">Introduction</h3>
             <article class="example">
-              <ul>
-                <li>//TODO Write about the audio context stuff</li>
-                //TODO write about CORS-enabled resources and limitations
-                <li>//TODO write about mounting</li>
-                <li>
-                  //TODO write about the key: If you change the source, you need
-                  to use :key="props.mediaUrl"
-                </li>
-                <li></li>
-                <li></li>
-                <li></li>
-              </ul>
-
-              <!-- <Introduction /> -->
+              <Introduction />
             </article>
 
-            <h3
-              id="basic-examples"
-              class="title is-3"
-            >Basic example</h3>
+            <h3 id="basic-examples" class="title is-3">Basic example</h3>
             <article class="example">
               <ExampleWithTheBasics />
             </article>
 
-            <h3
-              id="complete-examples"
-              class="title is-3"
-            >Complete example</h3>
+            <h3 id="complete-examples" class="title is-3">Complete example</h3>
             <article class="example">
               <ExampleWithEverything />
             </article>
 
-            <h3
-              id="audio-level-meter-widget"
-              class="title is-3"
-            >
+            <h3 id="audio-level-meter-widget" class="title is-3">
               An audio level meter widget including a player
             </h3>
             <article class="example">
               <DemoWidget />
             </article>
 
-            <h3
-              id="credits"
-              class="title is-3"
-            >Credits</h3>
+            <h3 id="credits" class="title is-3">Credits</h3>
             <article class="example">
               <Credits />
             </article>
@@ -118,4 +86,5 @@ import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
 .logo {
   display: block;
   margin: 0 auto 2rem;
-}</style>
+}
+</style>
