@@ -1,21 +1,11 @@
 {
-  "index.css": {
-    "file": "assets/index-98e350ee.css",
-    "src": "index.css"
+  "lib/main.ts": {
+    "file": "vue-audio-level-meter.umd.cjs",
+    "src": "lib/main.ts",
+    "isEntry": true
   },
-  "index.html": {
-    "assets": [
-      "assets/vue-audio-level-meter-logo-b3a1f441.svg"
-    ],
-    "css": [
-      "assets/index-98e350ee.css"
-    ],
-    "file": "assets/index-0670b1b1.js",
-    "isEntry": true,
-    "src": "index.html"
-  },
-  "src/assets/vue-audio-level-meter-logo.svg": {
-    "file": "assets/vue-audio-level-meter-logo-b3a1f441.svg",
-    "src": "src/assets/vue-audio-level-meter-logo.svg"
+  "style.css": {
+    "file": "style.css",
+    "src": "style.css"
   }
 }

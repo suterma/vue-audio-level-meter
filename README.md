@@ -26,7 +26,7 @@ npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Type-Check, Compile and Minify for Production (Page)
 
 ```sh
 # build for production
@@ -40,6 +40,16 @@ git add dist -f
 git commit -m 'built for gh-pages'
 git push
 npm run publish-gh-pages
+```
+
+### Compile and Minify for Production (Library)
+
+```sh
+# build for production as library (using vite's library mode)
+vite --config vite.lib-config.ts build
+
+# publish to npm
+npm publish
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)

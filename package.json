@@ -1,9 +1,20 @@
 {
   "name": "vue-audio-level-meter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "description": "A simple audio (peak) level meter for Vue.js",
-  "main": "index.js",
+  "main": "dist/vue-audio-level-meter.umd.cjs",
+  "types": "./dist/vue-audio-level-meter.d.ts",
+  "module": "dist/vue-audio-level-meter.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-audio-level-meter.js",
+      "require": "./dist/vue-audio-level-meter.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -33,6 +44,7 @@
     "vue": "^3.2.47"
   },
   "devDependencies": {
+    "path": "^0.12.7",
     "@highlightjs/vue-plugin": "^2.1.0",
     "@vitejs/plugin-vue": "^4.1.0",
     "typescript": "^4.9.3",

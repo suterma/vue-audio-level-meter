@@ -10,9 +10,16 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true,
-    "noEmit": true
+    
+    "types": ["vite/client", "cypress", "node"],
+    "noEmit": true,
+    "declaration": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules", "dist", "public", "tests"],
+  "references": [{ "path": "./tsconfig.node.json" }]  
 }

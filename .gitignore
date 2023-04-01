@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Specific dist ignores for the App build (these are not used for gh-pages)
+dist/manifest.json
