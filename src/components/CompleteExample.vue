@@ -136,8 +136,12 @@
         name='sourceUlr'
         v-model='sourceUrl'
       >
-        <option value="lidija_roos-not_for_sale.mp3">lidija_roos-not_for_sale.mp3 (same domain)</option>
-        <option value="lidija_roos-decisions.ogg">lidija_roos-decisions.ogg (same domain)</option>
+        <option value="lidija_roos-decisions.ogg">Decisions by Lidija Roos (ogg, same domain)</option>
+        <option value="lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, same domain)</option>
+        <option value="https://lib.replayer.app/eyes-have-not-seen-by-lidija-roos.flac">
+          Eyes have not seen by Lidia Roos (mp3, different domain, CORS enabled)</option>
+        <option value="https://previews.cambridge-mt.com/Fever_Full_Preview.mp3">
+          Fever by Mirroman (mp3, different domain, no CORS)</option>
       </select>
     </label>
     {{ sourceUrl }}
@@ -178,7 +182,7 @@ const maxLevel = ref(0);
 const lowRangeColor = ref('#9a47ff')
 const midRangeColor = ref('#31b800')
 const highRangeColor = ref('#f59b00')
-const backgroundColor = ref('#cccccc')
+const backgroundColor = ref('#333333')
 const showBar = ref(true)
 const showText = ref(true)
 const sourceUrl = ref('lidija_roos-not_for_sale.mp3')
@@ -213,6 +217,9 @@ async function resumeAudioContext() {
 onMounted(() => {
   audioContext.value = (new (window.AudioContext || window.webkitAudioContext)());
   if (audioElement.value) {
+    //TODO only connect when CORS is enabled
+    //const cors = await isCorsEnabled(audioElement.value.src);
+
     audioSource.value = audioContext.value.createMediaElementSource(
       audioElement.value
     );
