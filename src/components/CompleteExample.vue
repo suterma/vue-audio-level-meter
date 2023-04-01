@@ -129,8 +129,21 @@
     </label>
     {{ showText }}
   </p>
+  <p>
+    <label>
+      Select source
+      <select
+        name='sourceUlr'
+        v-model='sourceUrl'
+      >
+        <option value="lidija_roos-not_for_sale.mp3">lidija_roos-not_for_sale.mp3 (same domain)</option>
+        <option value="lidija_roos-decisions.ogg">lidija_roos-decisions.ogg (same domain)</option>
+      </select>
+    </label>
+    {{ sourceUrl }}
+  </p>
   <audio
-    src='lidija_roos-not_for_sale.mp3'
+    :src='sourceUrl'
     ref='audioElement'
     controls
     @play="resumeAudioContext()"
@@ -168,6 +181,7 @@ const highRangeColor = ref('#f59b00')
 const backgroundColor = ref('#cccccc')
 const showBar = ref(true)
 const showText = ref(true)
+const sourceUrl = ref('lidija_roos-not_for_sale.mp3')
 
 
 /**

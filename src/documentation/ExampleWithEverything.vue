@@ -30,6 +30,8 @@
       <div class="box">
         <CompleteExample></CompleteExample>
       </div>
+      Or <a href="https://github.com/suterma/vue-audio-level-meter/blob/main/src/components/CompleteExample.vue">review
+        this complete example on GitHub</a>.
     </div>
   </div>
 </template>
