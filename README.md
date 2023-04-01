@@ -2,21 +2,13 @@
 
 A simple audio (peak) level meter for Vue.js
 
-_This package is currently under construction_
-
 # Installation
 
     npm install vue-audio-level-meter
 
 # How to use
 
-## Basic examples
-
-..todo...
-
-## A note about CORS
-
-..todo...
+See the [documentation and live examples on the GitHGub page](https://suterma.github.io/vue-audio-level-meter/).
 
 # Build & Development
 
