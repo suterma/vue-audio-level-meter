@@ -16,16 +16,16 @@
     <div class="column">
       <h4>Limitations</h4>
       <ul>
-        <li><cite>vue-audio-level-meter</cite> requires <a href="https://vuejs.org/">Vue3</a>. If you are looking for a
-          pure JavaScript base solution, you
-          might want to consider <a href='https://github.com/esonderegger/web-audio-peak-meter'>
-            <cite>web-audio-peak-meter</cite></a> by Evan Sonderegger.
-        </li>
         <li>Processing sound requires a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a>-enabled
           source and a
           running <a href='https://developer.mozilla.org/en-US/docs/Web/API/AudioContext'>Audio Context</a>.
           <br />See <a href="https://github.com/esonderegger/web-audio-peak-meter#frequently-encountered-problems">Evan
             Sonderegger's notes about frequently encountered problems</a> to learn more.
+        </li>
+        <li><cite>vue-audio-level-meter</cite> requires <a href="https://vuejs.org/">Vue3</a>. If you are looking for a
+          pure JavaScript base solution, you
+          might want to consider <a href='https://github.com/esonderegger/web-audio-peak-meter'>
+            <cite>web-audio-peak-meter</cite></a> by Evan Sonderegger.
         </li>
         <li>Only a horizontal mode is available.</li>
         <li>No gauge level labels are available.</li>
