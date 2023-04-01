@@ -1,6 +1,6 @@
 <template>
   <meter
-    ref='levelMeter'
+    v-element-size="onResize"
     :min="minLevel"
     :low="lowLevel"
     :high="highLevel"
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { useElementSize } from '@vueuse/core';
+import { vElementSize } from '@vueuse/components'
 import {
   defineProps,
   ref,
@@ -84,28 +84,31 @@ const props = defineProps({
     required: true,
   },
 });
-const levelMeter = ref() as Ref<HTMLElement>
 
 /** The styles for the meter range element are dynamically calculated to be able to
  * use a pixel-defined gradient. This makes the gradient regions visually fixed with regard to the meter scale
  * (non-dependent from the actual meter value)
  * @devdoc See https://stackoverflow.com/a/69078238/79485 for the v-bind mechanism
  */
-const { width } = useElementSize(levelMeter);
+const meterWidth = ref(100);
+
+function onResize({ width }: { width: number; height: number }) {
+  meterWidth.value = width;
+}
 
 /** The value range. */
 const range = computed(() => props.maxLevel - props.minLevel)
 
 const widthMax = computed(() => {
-  return `${width.value}px`;
+  return `${meterWidth.value}px`;
 });
 
 const widthHigh = computed(() => {
-  return `${width.value * (1 - (1 / range.value) * (props.maxLevel - props.highLevel))}px`;
+  return `${meterWidth.value * (1 - (1 / range.value) * (props.maxLevel - props.highLevel))}px`;
 });
 
 const widthLow = computed(() => {
-  return `${(width.value * (1 - (1 / range.value) * (props.maxLevel - props.lowLevel)))}px`;
+  return `${(meterWidth.value * (1 - (1 / range.value) * (props.maxLevel - props.lowLevel)))}px`;
 });
 
 const widthMinimum = computed(() => {
