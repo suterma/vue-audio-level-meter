@@ -1,6 +1,6 @@
 <template>
   <meter
-    ref="levelMeter"
+    ref='levelMeter'
     :min="minLevel"
     :low="lowLevel"
     :high="highLevel"
@@ -11,11 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { useElementBounding } from '@vueuse/core';
+import { useElementSize } from '@vueuse/core';
 import {
   defineProps,
   ref,
   computed,
+  Ref,
 } from 'vue';
 
 /** An simple level meter, with three distinct ranges.
@@ -83,15 +84,14 @@ const props = defineProps({
     required: true,
   },
 });
-
-const levelMeter = ref(null);
+const levelMeter = ref() as Ref<HTMLElement>
 
 /** The styles for the meter range element are dynamically calculated to be able to
  * use a pixel-defined gradient. This makes the gradient regions visually fixed with regard to the meter scale
  * (non-dependent from the actual meter value)
  * @devdoc See https://stackoverflow.com/a/69078238/79485 for the v-bind mechanism
  */
-const { width } = useElementBounding(levelMeter);
+const { width } = useElementSize(levelMeter);
 
 /** The value range. */
 const range = computed(() => props.maxLevel - props.minLevel)
