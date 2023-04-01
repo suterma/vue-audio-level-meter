@@ -13,8 +13,8 @@
       :highRangeColor='highRangeColor'
       :backgroundColor='backgroundColor'
       :value="clampedLevel"
-      title="dBFS (peak)"
-    >
+      :title="title"
+    >{{ clampedLevelText }} dB
     </LevelMeter>
     <span
       v-if='showText'
@@ -175,8 +175,7 @@ const clampedLevel = computed(() => Math.min(props.maxLevel, Math.max(props.minL
 /** The textual representation of the signal level. */
 const clampedLevelText = computed(() => isFinite(value.value) ? value.value.toFixed(2) : '—')
 
-/** The value range, the meter displays in dB. */
-const range = computed(() => props.maxLevel - props.minLevel)
+const title = computed(() => `Level in dB (${props.algorithm})`)
 
 onMounted(() => {
   console.debug('AudioLevelMeter::onMounted');
