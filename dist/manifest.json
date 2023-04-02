@@ -1,6 +1,6 @@
 {
   "lib/main.ts": {
-    "file": "vue-audio-level-meter.umd.cjs",
+    "file": "vue-audio-level-meter.js",
     "src": "lib/main.ts",
     "isEntry": true
   },

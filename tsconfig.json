@@ -11,12 +11,14 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     
-    "types": ["vite/client", "cypress", "node"],
-    "noEmit": true,
+    "types": ["vite/client",  "node"],
+    "noEmit": false,
     "declaration": true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "third-lib": ["node_modules/third-lib"]
+    },
+    "baseUrl": ".",
 
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
