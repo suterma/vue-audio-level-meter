@@ -8,7 +8,8 @@ A simple audio (peak) level meter for Vue.js
 
 # How to use
 
-See the [documentation and live examples on the GitHGub page](https://suterma.github.io/vue-audio-level-meter/).
+- No module / lib build available. If you use the [NPM package](https://www.npmjs.com/package/vue-audio-level-meter), you need to import the SFC from `vue-audio-level-meter/src/components/AudioLevelMeter.vue`
+- See the [documentation and some live examples on the GitHub pages](https://suterma.github.io/vue-audio-level-meter/)
 
 # Build & Development
 

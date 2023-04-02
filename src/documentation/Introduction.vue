@@ -16,6 +16,7 @@
     <div class="column">
       <h4>Limitations</h4>
       <ul>
+        <li>No module / lib build available. If you use the <a href="https://www.npmjs.com/package/vue-audio-level-meter">NPM package</a>, you need to import the SFC from <code>vue-audio-level-meter/src/components/AudioLevelMeter.vue</code></li>
         <li>Processing sound requires a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a>-enabled
           source and a
           running <a href='https://developer.mozilla.org/en-US/docs/Web/API/AudioContext'>Audio Context</a>.

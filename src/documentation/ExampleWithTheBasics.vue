@@ -48,7 +48,7 @@
       <highlightjs
         language='vue-typescript'
         code="<script setup lang='ts'>
-import AudioLevelMeter from './AudioLevelMeter.vue';
+import AudioLevelMeter from 'vue-audio-level-meter/src/components/AudioLevelMeter.vue';
 import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
 
 /**
