@@ -146,8 +146,8 @@
         name='sourceUlr'
         v-model='sourceUrl'
       >
-        <option value="lidija_roos-decisions.ogg">Decisions by Lidija Roos (ogg, same domain)</option>
-        <option value="lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, same domain)</option>
+        <option value="https://lib.replayer.app/decisions-by-lidija-roos.ogg">Decisions by Lidija Roos (ogg, different domain, CORS enabled)</option>
+        <option value="https://lib.replayer.app/lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, different domain, CORS enabled)</option>
         <option value="https://lib.replayer.app/eyes-have-not-seen-by-lidija-roos.flac">
           Eyes have not seen by Lidia Roos (mp3, different domain, CORS enabled)</option>
         <option value="https://previews.cambridge-mt.com/Fever_Full_Preview.mp3">
@@ -197,7 +197,7 @@ const backgroundColor = ref('#333333')
 const showBar = ref(true)
 const showText = ref(true)
 const running = ref(true)
-const sourceUrl = ref('lidija_roos-not_for_sale.mp3')
+const sourceUrl = ref('https://lib.replayer.app/lidija_roos-not_for_sale.mp3')
 
 
 /**

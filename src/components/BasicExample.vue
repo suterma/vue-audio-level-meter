@@ -1,6 +1,6 @@
 <template>
   <audio
-    src='lidija_roos-not_for_sale.mp3'
+    src='https://lib.replayer.app/lidija_roos-not_for_sale.mp3'
     ref='audioElement'
     controls
     @play="resumeAudioContext()"
