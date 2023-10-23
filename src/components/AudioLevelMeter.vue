@@ -1,38 +1,21 @@
 <template>
-  <div class='audio-level-container flex-gap'>
-    <LevelMeter
-      v-if='showBar'
-      class='audio-level-meter'
-      :disabled="disabled"
-      :minLevel="minLevel"
-      :lowLevel='lowLevel'
-      :highLevel='highLevel'
-      :maxLevel="maxLevel"
-      :lowRangeColor='lowRangeColor'
-      :midRangeColor='midRangeColor'
-      :highRangeColor='highRangeColor'
-      :backgroundColor='backgroundColor'
-      :value="clampedLevel"
-      :title="title"
-    >{{ clampedLevelText }} dB
+  <div class='audio-level-container flex-gap' :class="{ vertical: vertical }">
+    <LevelMeter v-if='showBar' class='audio-level-meter' :class="{ vertical: vertical }" :disabled="disabled"
+      :minLevel="minLevel" :lowLevel='lowLevel' :highLevel='highLevel' :maxLevel="maxLevel" :lowRangeColor='lowRangeColor'
+      :midRangeColor='midRangeColor' :highRangeColor='highRangeColor' :backgroundColor='backgroundColor'
+      :value="clampedLevel" :title="title">{{ clampedLevelText }} dB
     </LevelMeter>
-    <span
-      v-if='showText'
-      class='audio-level-text'
-      :disabled="disabled"
-      :class='{ disabled: disabled }'
-    >{{ clampedLevelText }} dB</span>
+    <span v-if='showText' class='audio-level-text' :disabled="disabled" :class='{ disabled: disabled }'>{{
+      clampedLevelText }} dB</span>
   </div>
 </template>
 
 <script setup lang="ts">
 import {
-  onMounted,
-  defineProps,
-  onUnmounted,
   ref,
   PropType,
   computed,
+  watchEffect,
 } from 'vue';
 import LevelMeter from './LevelMeter.vue';
 
@@ -138,6 +121,23 @@ const props = defineProps({
     default: true
   },
 
+  /** Whether the meter is shown in vertical orientation */
+  vertical: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+
+  /** Whether the meter is running (actually providing peak measurements)
+   * @remarks Default is true. Set to false, to optimize performance, 
+   * if you know that the meter is not visible or otherwise not used.
+   */
+  running: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+
 
   /** Whether to show the component in a disabled state
    * @devdoc This attribute is processed with "fallthrough", to propagate the state to the inner elements.
@@ -177,10 +177,23 @@ const clampedLevelText = computed(() => isFinite(value.value) ? value.value.toFi
 
 const title = computed(() => `Level in dB (${props.algorithm})`)
 
-onMounted(() => {
-  console.debug('AudioLevelMeter::onMounted');
+/** Handles the running state of the meter */
+watchEffect(() => {
+  if (props.running) {
+    start();
+  }
+  else {
+    stop();
+  }
+});
 
-  analyser = props.audioContext.createAnalyser();
+/** Starts running the analyser */
+function start() {
+  console.debug('AudioLevelMeter::start');
+
+  if (!analyser) {
+    analyser = props.audioContext.createAnalyser();
+  }
 
   canUseFloatTimeDomainData =
     typeof analyser.getFloatTimeDomainData === 'function';
@@ -200,15 +213,20 @@ onMounted(() => {
 
   props.audioSource.connect(analyser);
   loop();
-});
+}
 
-onUnmounted(() => {
+function stop() {
+  console.debug('AudioLevelMeter::stop');
+
   cancelAnimationFrame(loopRequestId);
-  analyser.disconnect(); //the input
-});
-
+  if (analyser) {
+    analyser.disconnect(); //the input
+  }
+}
 
 function loop() {
+  //console.debug('AudioLevelMeter::loop');
+
   if (canUseFloatTimeDomainData) {
     analyser.getFloatTimeDomainData(floatSampleBuffer);
   } else {

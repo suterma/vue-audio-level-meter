@@ -131,6 +131,16 @@
   </p>
   <p>
     <label>
+      Meter is running
+      <input
+        type='checkbox'
+        v-model='running'
+      />
+    </label>
+    {{ running }}
+  </p>
+  <p>
+    <label>
       Select source
       <select
         name='sourceUlr'
@@ -168,6 +178,7 @@
     :algorithm="algorithm"
     :showBar='showBar'
     :showText='showText'
+    :running='running'
   />
 </template>
 <script setup lang='ts'>
@@ -185,6 +196,7 @@ const highRangeColor = ref('#f59b00')
 const backgroundColor = ref('#333333')
 const showBar = ref(true)
 const showText = ref(true)
+const running = ref(true)
 const sourceUrl = ref('lidija_roos-not_for_sale.mp3')
 
 

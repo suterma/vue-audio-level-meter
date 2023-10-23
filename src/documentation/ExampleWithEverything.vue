@@ -7,6 +7,9 @@
         <li>Set dynamic range, including the range color inflection levels</li>
         <li>Set the range and background colors with properties</li>
         <li>Hide or show the level label or the meter itself</li>
+        <li>If needed, start/stop the meter with the "running" property. Default is "true". 
+          Allows to optimize for performance,  
+          if you know that the audio playback is not running, the meter is not visible or otherwise not used at times.</li>
       </ul>
       </p>
       <p>

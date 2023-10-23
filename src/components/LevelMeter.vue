@@ -13,10 +13,8 @@
 <script setup lang="ts">
 import { vElementSize } from '@vueuse/components'
 import {
-  defineProps,
   ref,
   computed,
-  Ref,
 } from 'vue';
 
 /** An simple level meter, with three distinct ranges.
