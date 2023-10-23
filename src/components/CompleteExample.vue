@@ -158,6 +158,7 @@
   </p>
   <audio
     :src='sourceUrl'
+    crossorigin="anonymous"
     ref='audioElement'
     controls
     @play="resumeAudioContext()"

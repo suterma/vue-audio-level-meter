@@ -1,6 +1,7 @@
 <template>
   <audio
     src='https://lib.replayer.app/lidija_roos-not_for_sale.mp3'
+    crossorigin="anonymous"
     ref='audioElement'
     controls
     @play="resumeAudioContext()"
