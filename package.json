@@ -1,6 +1,6 @@
 {
   "name": "vue-audio-level-meter",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "type": "module",
   "description": "A simple audio (peak) level meter for Vue.js",
   "main": "index.js",
