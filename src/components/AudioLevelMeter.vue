@@ -16,6 +16,8 @@ import {
   PropType,
   computed,
   watchEffect,
+  onBeforeUnmount,
+  onMounted,
 } from 'vue';
 import LevelMeter from './LevelMeter.vue';
 
@@ -186,6 +188,16 @@ watchEffect(() => {
     stop();
   }
 });
+
+onMounted(()=>{
+  // Make sure, this gets stopped even on unexpected page unload
+  window.addEventListener('beforeunload', stop)
+
+});
+
+onBeforeUnmount(()=>{
+  stop();
+})
 
 /** Starts running the analyser */
 function start() {

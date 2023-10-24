@@ -150,6 +150,8 @@
         <option value="https://lib.replayer.app/lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, different domain, CORS enabled)</option>
         <option value="https://lib.replayer.app/eyes-have-not-seen-by-lidija-roos.flac">
           Eyes have not seen by Lidia Roos (mp3, different domain, CORS enabled)</option>
+          <option value="https://lib.replayer.app/test/sine%20chirp%2012Hz5-20kHz%201_3oct_sec%20lr-inphase.wav">
+          Sine Chirp 12.5Hz-20kHz, 1/3 of a an Octave per second, 0dBFS (wav, different domain, CORS enabled)</option>
         <option value="https://previews.cambridge-mt.com/Fever_Full_Preview.mp3">
           Fever by Mirroman (mp3, different domain, no CORS)</option>
       </select>
