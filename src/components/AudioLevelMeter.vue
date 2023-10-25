@@ -200,6 +200,7 @@ onMounted(()=>{
 });
 
 onBeforeUnmount(()=>{
+  window.removeEventListener('beforeunload', stop)
   stop();
 })
 
