@@ -3,7 +3,7 @@ import ExampleWithTheBasics from './documentation/ExampleWithTheBasics.vue';
 import Credits from './documentation/Credits.vue';
 import Introduction from './documentation/Introduction.vue';
 // import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
-// import ExampleForPerformance from './documentation/ExampleForPerformance.vue';
+ import ExampleForPerformance from './documentation/ExampleForPerformance.vue';
 </script>
 
 <template>
@@ -69,7 +69,7 @@ import Introduction from './documentation/Introduction.vue';
               class="title is-3"
             >Example for performance evaluation</h3>
             <article class="example">
-              <!-- <ExampleForPerformance /> -->
+              <ExampleForPerformance />
             </article>            
 
             <h3

@@ -86,7 +86,7 @@ import AudioLevelMeter from './AudioLevelMeter.vue';
 import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
 
 const algorithm = ref('peak');
-const running = ref(true)
+const running = ref(false)
 const sourceUrl = ref('https://lib.replayer.app/lidija_roos-not_for_sale.mp3')
 const instanceCount = ref(0);
 
