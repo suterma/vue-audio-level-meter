@@ -168,8 +168,8 @@ let byteSampleBuffer: Uint8Array;
 
 let loopRequestId: number;
 
-/** The value of the signal Starts with the minimum level. */
-const value = ref(props.minLevel);
+/** The value of the signal starts with the absolute minimum level. */
+const value = ref(Number.NEGATIVE_INFINITY);
 
 /** The value, the meter actually displays in dBFS. */
 const clampedLevel = computed(() => Math.min(props.maxLevel, Math.max(props.minLevel, value.value)))
@@ -243,6 +243,7 @@ function stop() {
   if (analyser) {
     analyser.disconnect(); //the input
   }
+  value.value = Number.NEGATIVE_INFINITY;
 }
 
 /** Calculates the power level for the most recent set of time domain data

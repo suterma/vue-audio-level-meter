@@ -1,17 +1,20 @@
 <template>
+  <AudioLevelMeter
+    v-if='audioSource && audioContext'
+    :running='isPlaying'
+    :audioSource='audioSource'
+    :audioContext='audioContext'
+  />
   <audio
     src='https://lib.replayer.app/lidija_roos-not_for_sale.mp3'
     crossorigin="anonymous"
     ref='audioElement'
     controls
-    @play="resumeAudioContext()"
+    @play='resumeAudioContext()'
+    @playing='updatePlaying(true)'
+    @pause='updatePlaying(false)'
   >
   </audio>
-  <AudioLevelMeter
-    v-if="audioSource && audioContext"
-    :audioSource="audioSource"
-    :audioContext="audioContext"
-  />
 </template>
 <script setup lang='ts'>
 import AudioLevelMeter from './AudioLevelMeter.vue';
@@ -41,6 +44,16 @@ async function resumeAudioContext() {
     console.debug("audio context resumed")
   }
 }
+
+/** Updates the playback indication
+ */
+ async function updatePlaying(playing:boolean) {
+  isPlaying.value = playing;
+  console.debug("isPlaying: ", playing)
+
+}
+
+const isPlaying = ref(false);
 
 /** @devdoc Note that you can only access the ref after the component is mounted. */
 onMounted(() => {

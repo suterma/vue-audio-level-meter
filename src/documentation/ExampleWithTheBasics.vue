@@ -10,8 +10,7 @@
           <ul>
             <li>the <code>src</code> set</li>
             <li>a <code>ref</code> defined</li>
-            <li>optionally the default <code>controls</code> (or your own controls)</li>
-          </ul>
+           </ul>
         </li>
         <li>an <b>AudioLevelMeter</b> component instance with the <code>audioContext</code> and the
           <code>audioSource</code> properties set
@@ -27,89 +26,41 @@
       <highlightjs
         language='vue-template'
         code="<template>
+  <AudioLevelMeter
+    v-if='audioSource && audioContext'
+    :running='isPlaying'
+    :audioSource='audioSource'
+    :audioContext='audioContext'
+  />
   <audio
     src='https://lib.replayer.app/lidija_roos-not_for_sale.mp3'
     crossorigin='anonymous'
     ref='audioElement'
     controls
     @play='resumeAudioContext()'
+    @playing='updatePlaying(true)'
+    @pause='updatePlaying(false)'
   >
   </audio>
-  <AudioLevelMeter
-    v-if='audioSource && audioContext'
-    :audioSource='audioSource'
-    :audioContext='audioContext'
-  />
 </template>"
       />
       <p>
-      <details>
-    <summary>Click to see how to set up the audio source and audio context for the above template:</summary>
-
-      <highlightjs
-        language='vue-typescript'
-        code="<script setup lang='ts'>
-import AudioLevelMeter from 'vue-audio-level-meter/src/components/AudioLevelMeter.vue';
-import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
-
-/**
- *  The AudioContext to use
- *  @devdoc webkitAudioContext supports older versions of Safari
- */
-const audioContext = shallowRef<InstanceType<typeof AudioContext> | null>(null);
-
-/** A reference to the audio element to use
- */
-const audioElement = ref<InstanceType<typeof HTMLAudioElement> | null>(null);
-
-/** The audio source node to use by the meter
- */
-const audioSource: ShallowRef<InstanceType<
-  typeof MediaElementAudioSourceNode
-> | null> = shallowRef(null);
-
-/** Resumes the audio context after the user's first page interaction, if necessary.
- */
-async function resumeAudioContext() {
-  if (audioContext.value?.state === 'suspended') {
-    await audioContext.value.resume();
-    console.debug('audio context resumed')
-  }
-}
-
-/** @devdoc Note that you can only access the ref after the component is mounted. */
-onMounted(() => {
-  audioContext.value = (new (window.AudioContext || window.webkitAudioContext)());
-  if (audioElement.value) {
-    audioSource.value = audioContext.value.createMediaElementSource(
-      audioElement.value
-    );
-    audioSource.value.connect(audioContext.value.destination);
-  }
-});
-
-/** @devdoc A little housekeeping */
-onUnmounted(() => {
-  if (audioContext.value) {
-    audioSource.value?.disconnect(audioContext.value.destination);
-    audioContext.value.close();
-  }
-  // The media element and the source will be garbage collected
-});
-</script>"
-      /> </details>
-      Or <a href="https://github.com/suterma/vue-audio-level-meter/blob/main/src/components/BasicExample.vue">review this example on GitHub</a>.
-      <hr></p>
-      <h4>Notes</h4>
+      <a href="https://github.com/suterma/vue-audio-level-meter/blob/main/src/components/BasicExample.vue">Review this example on GitHub</a> 
+      to see how to set up the audio source and audio context.
+      </p>
+      <hr>
+      <h4>Notes for this example</h4>
+      <p>
         <ul>
+          <li>Optionally, as performance optimization, you might also run the audio level meter only when the audio source is actually playing.
+        </li>
           <li>
-        You might use an audio element event to resume the audio context, if required, like the above example does.
+        You might use an audio element event to resume the audio context, if required.
       </li>
       <li>
-        At component mount time, the ref is invoked to actually create an audio node
-        for the analyzer.
+        At component mount time, the audio element's ref is invoked to create an audio analyzer node for it.
       </li>
-    </ul>   
+    </ul></p>   
     </div>
   </div>
 </template>
