@@ -3,6 +3,7 @@ import ExampleWithTheBasics from './documentation/ExampleWithTheBasics.vue';
 import Credits from './documentation/Credits.vue';
 import Introduction from './documentation/Introduction.vue';
 import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
+import ExampleForPerformance from './documentation/ExampleForPerformance.vue';
 </script>
 
 <template>
@@ -32,6 +33,7 @@ import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
             <ul class="menu-list">
               <li><a href="#basic-examples"> Basic example</a></li>
               <li><a href="#complete-examples"> Complete example</a></li>
+              <li><a href="#performance-examples"> Performance example</a></li>
               <li><a href="#credits">Credits</a></li>
             </ul>
           </aside>
@@ -61,6 +63,14 @@ import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
             <article class="example">
               <ExampleWithEverything />
             </article>
+
+            <h3
+              id="performance-examples"
+              class="title is-3"
+            >Example for performance evaluation</h3>
+            <article class="example">
+              <ExampleForPerformance />
+            </article>            
 
             <h3
               id="credits"

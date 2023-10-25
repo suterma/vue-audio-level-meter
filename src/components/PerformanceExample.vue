@@ -17,118 +17,8 @@
           v-model="algorithm"
         > Average
       </label>
-    </label>
-
-    <!-- Selected: {{ algorithm }} -->
-  </p>
-  <p>
-    <label>
-      Minimum level (-96dB - 0dB)
-      <input
-        type='range'
-        min='-96'
-        max='0'
-        v-model='minLevel'
-      />
-    </label>
-    {{ minLevel }}
-  </p>
-  <p>
-    <label>
-      Low level (-24dB - 0 dB)
-      <input
-        type='range'
-        min='-24'
-        max='0'
-        v-model='lowLevel'
-      />
-    </label>
-    {{ lowLevel }}
-  </p>
-  <p>
-    <label>
-      High level (-15dB - +9 dB)
-      <input
-        type='range'
-        min='-15'
-        max='9'
-        v-model='highLevel'
-      />
-    </label>
-    {{ highLevel }}
-  </p>
-  <p>
-    <label>
-      Max level (-12dB - +12 dB)
-      <input
-        type='range'
-        min='-12'
-        max='12'
-        v-model='maxLevel'
-      />
-    </label>
-    {{ maxLevel }}
-  </p>
-  <p>
-    <label>
-      Low range color
-      <input
-        type='color'
-        v-model='lowRangeColor'
-      />
-    </label>
-    {{ lowRangeColor }}
-  </p>
-  <p>
-    <label>
-      Mid range color
-      <input
-        type='color'
-        v-model='midRangeColor'
-      />
-    </label>
-    {{ midRangeColor }}
-  </p>
-  <p>
-    <label>
-      High range color
-      <input
-        type='color'
-        v-model='highRangeColor'
-      />
-    </label>
-    {{ highRangeColor }}
-  </p>
-  <p>
-    <label>
-      Background color
-      <input
-        type='color'
-        v-model='backgroundColor'
-      />
-    </label>
-    {{ backgroundColor }}
-  </p>
-  <p>
-    <label>
-      Show level bar
-      <input
-        type='checkbox'
-        v-model='showBar'
-      />
-    </label>
-    {{ showBar }}
-  </p>
-  <p>
-    <label>
-      Show level text
-      <input
-        type='checkbox'
-        v-model='showText'
-      />
-    </label>
-    {{ showText }}
-  </p>
+    </label>  
+  </p>   
   <p>
     <label>
       Meter is running
@@ -166,41 +56,39 @@
     @play="resumeAudioContext()"
   >
   </audio>
+  <p>
+    <label>
+      Instance count
+      <input
+        type='number'
+        v-model='instanceCount'
+        min='0'
+        step='1'
+      />
+    </label>
+    {{ instanceCount }}
+  </p>
+  <div v-for="(item, index) in [...Array(instanceCount).keys()]" :key="item">
+<span>Audio level meter instance number {{index + 1}}:</span>
   <AudioLevelMeter
-    v-if="audioSource && audioContext"
-    :minLevel='minLevel'
-    :lowLevel='lowLevel'
-    :highLevel='highLevel'
-    :maxLevel='maxLevel'
-    :lowRangeColor='lowRangeColor'
-    :midRangeColor='midRangeColor'
-    :highRangeColor='highRangeColor'
-    :backgroundColor='backgroundColor'
+    :key='index'
+    v-if="audioSource && audioContext"  
     :audioSource="audioSource"
     :audioContext="audioContext"
     :algorithm="algorithm"
-    :showBar='showBar'
-    :showText='showText'
     :running='running'
   />
+</div>
+
 </template>
 <script setup lang='ts'>
 import AudioLevelMeter from './AudioLevelMeter.vue';
 import { onMounted, onUnmounted, ref, ShallowRef, shallowRef } from 'vue';
 
 const algorithm = ref('peak');
-const minLevel = ref(-48);
-const lowLevel = ref(-12);
-const highLevel = ref(-3);
-const maxLevel = ref(0);
-const lowRangeColor = ref('#9a47ff')
-const midRangeColor = ref('#31b800')
-const highRangeColor = ref('#f59b00')
-const backgroundColor = ref('#333333')
-const showBar = ref(true)
-const showText = ref(true)
 const running = ref(true)
 const sourceUrl = ref('https://lib.replayer.app/lidija_roos-not_for_sale.mp3')
+const instanceCount = ref(2);
 
 
 /**
