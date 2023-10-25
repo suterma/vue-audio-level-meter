@@ -163,8 +163,9 @@
     crossorigin="anonymous"
     ref='audioElement'
     controls
-    @play="resumeAudioContext()"
-  >
+    @play='resumeAudioContext()'
+    @playing='updatePlaying(true)'
+    @pause='updatePlaying(false)'  >
   </audio>
   <AudioLevelMeter
     v-if="audioSource && audioContext"
@@ -199,7 +200,7 @@ const highRangeColor = ref('#f59b00')
 const backgroundColor = ref('#333333')
 const showBar = ref(true)
 const showText = ref(true)
-const running = ref(true)
+const running = ref(false)
 const sourceUrl = ref('https://lib.replayer.app/lidija_roos-not_for_sale.mp3')
 
 
@@ -226,6 +227,12 @@ async function resumeAudioContext() {
     await audioContext.value.resume();
     console.debug("audio context resumed")
   }
+}
+
+/** Updates the running state according to the playback state
+ */
+ async function updatePlaying(playing:boolean) {
+  running.value = playing;
 }
 
 /** @devdoc Note that you can only access the ref after the component is mounted. */

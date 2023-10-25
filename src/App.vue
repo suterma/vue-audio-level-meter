@@ -2,7 +2,7 @@
 import ExampleWithTheBasics from './documentation/ExampleWithTheBasics.vue';
 import Credits from './documentation/Credits.vue';
 import Introduction from './documentation/Introduction.vue';
-// import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
+import ExampleWithEverything from './documentation/ExampleWithEverything.vue';
  import ExampleForPerformance from './documentation/ExampleForPerformance.vue';
 </script>
 
@@ -61,7 +61,7 @@ import Introduction from './documentation/Introduction.vue';
               class="title is-3"
             >Complete example</h3>
             <article class="example">
-              <!-- <ExampleWithEverything /> -->
+              <ExampleWithEverything />
             </article>
 
             <h3

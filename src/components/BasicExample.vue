@@ -50,7 +50,6 @@ async function resumeAudioContext() {
  async function updatePlaying(playing:boolean) {
   isPlaying.value = playing;
   console.debug("isPlaying: ", playing)
-
 }
 
 const isPlaying = ref(false);
