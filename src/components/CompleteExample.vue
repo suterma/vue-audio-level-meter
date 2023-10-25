@@ -19,7 +19,7 @@
       </label>
     </label>
 
-    {{ algorithm }}
+    <!-- Selected: {{ algorithm }} -->
   </p>
   <p>
     <label>

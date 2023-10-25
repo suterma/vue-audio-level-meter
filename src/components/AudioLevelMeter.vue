@@ -179,6 +179,10 @@ const clampedLevelText = computed(() => isFinite(value.value) ? value.value.toFi
 
 const title = computed(() => `Level in dB (${props.algorithm})`)
 
+const isUsingPeakAlgorithm = computed(() => props.algorithm === 'peak');
+
+const isUsingAverageAlgorithm = computed(() => props.algorithm === 'average');
+
 /** Handles the running state of the meter */
 watchEffect(() => {
   if (props.running) {
@@ -207,6 +211,10 @@ function start() {
     analyser = props.audioContext.createAnalyser();
   }
 
+  /** Whether the use of floating point time domain data is possible
+   * @remarks This allows for more precistion. It's supported on all major 
+   * browsers as of today.
+    */
   canUseFloatTimeDomainData =
     typeof analyser.getFloatTimeDomainData === 'function';
 
@@ -236,6 +244,9 @@ function stop() {
   }
 }
 
+/** Calculates the power level for the most recent set of time domain data
+ * @remarks chooses the appropriate algorithm according to the settings
+ */
 function loop() {
   //console.debug('AudioLevelMeter::loop');
 
@@ -246,7 +257,29 @@ function loop() {
   }
 
   // Compute power over the interval.
-  if (props.algorithm === 'average') {
+  if (isUsingPeakAlgorithm.value) {
+    let peakInstantaneousPower = 0;
+    if (canUseFloatTimeDomainData) {
+      for (let i = 0; i < floatSampleBuffer.length; i++) {
+        const sample = floatSampleBuffer[i];
+        if (sample) {
+          const power = sample ** 2;
+          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+        }
+      }
+    } else {
+      for (let i = 0; i < byteSampleBuffer.length; i++) {
+        const sample = byteSampleBuffer[i];
+        if (sample) {
+          const power = (sample / 128 - 1) ** 2;
+          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
+        }
+      }
+    }
+    /* peak instantaneous power in dB */
+    value.value = 10 * Math.log10(peakInstantaneousPower);
+  }  
+  else if (isUsingAverageAlgorithm.value) {
     let sumOfSquares = 0;
     if (canUseFloatTimeDomainData) {
       for (let i = 0; i < floatSampleBuffer.length; i++) {
@@ -268,29 +301,7 @@ function loop() {
       value.value = 10 * Math.log10(sumOfSquares / byteSampleBuffer.length);
     }
   }
-  else if (props.algorithm === 'peak') {
-    let peakInstantaneousPower = 0;
-    if (canUseFloatTimeDomainData) {
-      for (let i = 0; i < floatSampleBuffer.length; i++) {
-        const sample = floatSampleBuffer[i];
-        if (sample) {
-          const power = sample ** 2;
-          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
-        }
-      }
-    } else {
-      for (let i = 0; i < byteSampleBuffer.length; i++) {
-        const sample = byteSampleBuffer[i];
-        if (sample) {
-          const power = (sample / 128 - 1) ** 2;
-          peakInstantaneousPower = Math.max(power, peakInstantaneousPower);
-        }
-      }
-    }
-    /* peak instantaneous power in dB */
-    value.value = 10 * Math.log10(peakInstantaneousPower);
-  }
-  else { throw new Error("algorithm must be on of 'peak', 'average'") }
+  else { throw new Error("algorithm must be one of 'peak', 'average'") }
 
   loopRequestId = requestAnimationFrame(loop);
 }
