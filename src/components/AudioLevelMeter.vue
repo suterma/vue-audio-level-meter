@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import {
   ref,
-  PropType,
+  type PropType,
   computed,
   watchEffect,
   onBeforeUnmount,
