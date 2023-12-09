@@ -2,7 +2,7 @@
 
 A simple audio (peak) level meter for Vue.js
 
-![visual example](https://github.com/suterma/vue-audio-level-meter/blob/main/doc/vue-audio-level-meter.png)
+[![Visual example](https://github.com/suterma/vue-audio-level-meter/blob/main/doc/vue-audio-level-meter.png)](https://suterma.github.io/vue-audio-level-meter/)
 
 # Installation
 
