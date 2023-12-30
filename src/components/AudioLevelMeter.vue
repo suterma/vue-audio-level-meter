@@ -29,7 +29,7 @@ const props = defineProps({
   /** The audio source node to use.
    */
   audioSource: {
-    type: AudioNode,
+     type: null as unknown as PropType<AudioNode>,
     required: true,
   },
   /** The audio context to use.
