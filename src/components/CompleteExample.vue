@@ -146,9 +146,9 @@
         name='sourceUlr'
         v-model='sourceUrl'
       >
-        <option value="https://lib.replayer.app/decisions-by-lidija-roos.ogg">Decisions by Lidija Roos (ogg, different domain, CORS enabled)</option>
-        <option value="https://lib.replayer.app/lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, different domain, CORS enabled)</option>
-        <option value="https://lib.replayer.app/eyes-have-not-seen-by-lidija-roos.flac">
+        <option value="https://lib.replayer.app/demo/decisions-by-lidija-roos.ogg">Decisions by Lidija Roos (ogg, different domain, CORS enabled)</option>
+        <option value="https://lib.replayer.app/demo/lidija_roos-not_for_sale.mp3">Not for sale by Lidija Roos (mp3, different domain, CORS enabled)</option>
+        <option value="https://lib.replayer.app/demo/eyes-have-not-seen-by-lidija-roos.flac">
           Eyes have not seen by Lidia Roos (mp3, different domain, CORS enabled)</option>
           <option value="https://lib.replayer.app/test/sine%20chirp%2012Hz5-20kHz%201_3oct_sec%20lr-inphase.wav">
           Sine Chirp 12.5Hz-20kHz, 1/3 of a an Octave per second, 0dBFS (wav, different domain, CORS enabled)</option>
@@ -201,7 +201,7 @@ const backgroundColor = ref('#333333')
 const showBar = ref(true)
 const showText = ref(true)
 const running = ref(false)
-const sourceUrl = ref('https://lib.replayer.app/lidija_roos-not_for_sale.mp3')
+const sourceUrl = ref('https://lib.replayer.app/demo/lidija_roos-not_for_sale.mp3')
 
 
 /**

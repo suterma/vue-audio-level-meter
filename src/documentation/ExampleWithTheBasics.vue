@@ -33,7 +33,7 @@
     :audioContext='audioContext'
   />
   <audio
-    src='https://lib.replayer.app/lidija_roos-not_for_sale.mp3'
+    src='https://lib.replayer.app/demo/lidija_roos-not_for_sale.mp3'
     crossorigin='anonymous'
     ref='audioElement'
     controls
